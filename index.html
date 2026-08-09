@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EDS Controller - Equalized Text Buttons & Centered Minus</title>
+<title>EDS Controller - Exact Button Matches</title>
 <style>
   body {
     background-color: #1e1e1e; 
@@ -18,7 +18,7 @@
   .eds-panel {
     background-color: #c9d2db;
     padding: 30px;
-    width: 580px;
+    width: 600px; /* Slightly wider to accommodate the precise gaps */
     box-shadow: 0 10px 30px rgba(0,0,0,0.8);
     position: relative;
     box-sizing: border-box;
@@ -125,7 +125,7 @@
   .button-section {
     border: 2px solid #1a1a1a;
     border-radius: 10px;
-    padding: 16px 12px;
+    padding: 18px 14px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -158,7 +158,7 @@
     color: #111;
   }
 
-  /* Base Button Styling - Uniform Height & Alignment */
+  /* Base Button Styling */
   .btn {
     background-color: #0d0d0d;
     background-clip: content-box; 
@@ -166,7 +166,7 @@
     padding: 2px;
     border-radius: 10px;
     color: #f2f2f2;
-    height: 48px;
+    height: 48px; /* Uniform height */
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -174,29 +174,27 @@
     box-shadow: inset 0 1px 1px rgba(255,255,255,0.15);
     transition: transform 0.05s ease, background-color 0.05s ease;
     box-sizing: border-box;
-    line-height: 1; /* Ensures text glyphs align dead center */
   }
 
-  /* Plus, Minus & Toggle Icon Buttons (Square) */
+  /* Plus, Minus & Toggle Icon Buttons */
   .btn.symbol-btn {
-    width: 44px;
-    font-size: 32px;
+    width: 46px;
+    flex: 0 0 46px; /* Locks the width so it can't stretch */
+    font-size: 34px;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: normal;
+    line-height: 1; 
   }
 
-  /* Centering Fix for the Minus Symbol */
-  .btn.minus-btn {
-    padding-bottom: 2px; /* Fine-tuned vertical alignment */
-  }
-
-  /* SEARCH & SEND Buttons - Identical Width & Height */
+  /* SEARCH & SEND Buttons - Strict Length */
   .btn.text-btn {
-    width: 68px; /* Fixed equal length for both SEARCH and SEND */
-    font-size: 13.5px;
+    width: 76px;
+    flex: 0 0 76px; /* Forces both buttons to be identically long regardless of text width */
+    font-size: 14px;
     font-family: 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif;
     font-weight: bold;
     letter-spacing: -0.2px;
+    padding: 2px 0; /* Override default side padding */
   }
 
   .btn:active {
@@ -312,7 +310,10 @@
     <button class="btn symbol-btn plus-btn">+</button>
     <button class="btn symbol-btn plus-btn">+</button>
     <button class="btn symbol-btn plus-btn">+</button>
-    <button class="btn symbol-btn minus-btn" id="btn-minus">-</button>
+    
+    <!-- Changed standard hyphen to true mathematical minus sign (&minus;) for perfect dead-center alignment -->
+    <button class="btn symbol-btn" id="btn-minus">&minus;</button>
+    
     <button class="btn text-btn" id="btn-send">SEND</button>
     
     <div class="label-bottom">COOL-AIR</div>
