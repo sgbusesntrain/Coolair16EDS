@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EDS Controller - Four Plus Buttons & Rollover Logic</title>
+<title>EDS Controller - Independent Digit Rollover</title>
 <style>
   body {
     background-color: #1e1e1e; 
@@ -399,11 +399,10 @@
   const comLight = document.getElementById('com-light');
   const arrowLight = document.getElementById('arrow-light');
   
-  let currentVal = 0;
-  let searchDirectionDesc = false; // false = lowest to highest (arrow off), true = highest to lowest (arrow on)
+  let currentVal = 0; // Stored as integer 0 - 9999
+  let searchDirectionDesc = false; 
   let lastIncrementStep = 1;
 
-  // Available future EDS codes for searching
   const availableValues = [0, 1111, 2222, 9999];
 
   const matrixModules = [];
@@ -443,6 +442,38 @@
     }
   }
 
+  // Independent column adder: adds step value (1000, 100, 10, or 1) strictly to that specific digit column with independent wrap-around (0-9)
+  function addIndependent(val, step) {
+    let str = String(val).padStart(4, '0');
+    let d0 = parseInt(str[0], 10);
+    let d1 = parseInt(str[1], 10);
+    let d2 = parseInt(str[2], 10);
+    let d3 = parseInt(str[3], 10);
+
+    if (step === 1000) d0 = (d0 + 1) % 10;
+    if (step === 100)  d1 = (d1 + 1) % 10;
+    if (step === 10)   d2 = (d2 + 1) % 10;
+    if (step === 1)    d3 = (d3 + 1) % 10;
+
+    return parseInt(`${d0}${d1}${d2}${d3}`, 10);
+  }
+
+  // Independent column subtractor: subtracts step value strictly from that specific digit column with independent wrap-around (0-9)
+  function subIndependent(val, step) {
+    let str = String(val).padStart(4, '0');
+    let d0 = parseInt(str[0], 10);
+    let d1 = parseInt(str[1], 10);
+    let d2 = parseInt(str[2], 10);
+    let d3 = parseInt(str[3], 10);
+
+    if (step === 1000) d0 = (d0 - 1 + 10) % 10;
+    if (step === 100)  d1 = (d1 - 1 + 10) % 10;
+    if (step === 10)   d2 = (d2 - 1 + 10) % 10;
+    if (step === 1)    d3 = (d3 - 1 + 10) % 10;
+
+    return parseInt(`${d0}${d1}${d2}${d3}`, 10);
+  }
+
   updateDisplay(currentVal);
 
   // Toggle Search Direction Button (Arrow)
@@ -470,34 +501,34 @@
     updateDisplay(currentVal);
   });
 
-  // Four Plus Buttons with modulo loop rollover (0 to 9999)
+  // Plus Buttons with independent single-digit rollover
   document.getElementById('btn-p1000').addEventListener('click', () => {
-    currentVal = (currentVal + 1000) % 10000;
     lastIncrementStep = 1000;
+    currentVal = addIndependent(currentVal, 1000);
     updateDisplay(currentVal);
   });
 
   document.getElementById('btn-p100').addEventListener('click', () => {
-    currentVal = (currentVal + 100) % 10000;
     lastIncrementStep = 100;
+    currentVal = addIndependent(currentVal, 100);
     updateDisplay(currentVal);
   });
 
   document.getElementById('btn-p10').addEventListener('click', () => {
-    currentVal = (currentVal + 10) % 10000;
     lastIncrementStep = 10;
+    currentVal = addIndependent(currentVal, 10);
     updateDisplay(currentVal);
   });
 
   document.getElementById('btn-p1').addEventListener('click', () => {
-    currentVal = (currentVal + 1) % 10000;
     lastIncrementStep = 1;
+    currentVal = addIndependent(currentVal, 1);
     updateDisplay(currentVal);
   });
 
-  // Minus Button Logic with reverse loop rollover
+  // Minus Button Logic with independent single-digit reverse rollover
   document.getElementById('btn-minus').addEventListener('click', () => {
-    currentVal = (currentVal - lastIncrementStep + 10000) % 10000;
+    currentVal = subIndependent(currentVal, lastIncrementStep);
     updateDisplay(currentVal);
   });
 
