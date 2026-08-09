@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EDS Controller Preview</title>
+<title>EDS Controller - Interactive Buttons & Logic</title>
 <style>
   body {
     background-color: #1e1e1e; 
@@ -104,6 +104,7 @@
     border-radius: 50%;
     background-color: #310808;
     box-shadow: inset 0 1px 2px rgba(0,0,0,0.9);
+    transition: background-color 0.05s ease, box-shadow 0.05s ease;
   }
 
   /* Lit LED Dots */
@@ -192,10 +193,12 @@
     border-radius: 10px;
     color: #f2f2f2;
     height: 48px;
+    cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
     box-shadow: inset 0 1px 1px rgba(255,255,255,0.15);
+    transition: transform 0.05s ease, background-color 0.05s ease;
     box-sizing: border-box;
   }
 
@@ -204,6 +207,7 @@
     flex: 0 0 46px;
     font-size: 38px;
     font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
     line-height: 1; 
   }
 
@@ -214,17 +218,25 @@
     font-family: 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif;
     font-weight: bold;
     letter-spacing: -0.2px;
+    padding: 0;
+  }
+
+  .btn:active {
+    transform: translateY(1px);
+    background-color: #1a1a1a;
   }
 
   .toggle-svg {
     width: 26px;
     height: 28px;
   }
+
 </style>
 </head>
 <body>
 
 <div class="eds-panel">
+  
   <div class="top-row">
     <div class="port-wrapper">
       <div class="port-nub"></div>
@@ -238,48 +250,9 @@
       </div>
     </div>
 
-    <!-- 4-Digit 5x7 Dot Matrix Display Screen (Showing 0000 with tighter spacing) -->
-    <div class="display-screen">
-      <!-- Digit 0 -->
-      <div class="matrix-digit">
-        <div class="dot"></div><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot"></div>
-        <div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot on"></div>
-        <div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot on"></div><div class="dot on"></div>
-        <div class="dot on"></div><div class="dot"></div><div class="dot on"></div><div class="dot"></div><div class="dot on"></div>
-        <div class="dot on"></div><div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot on"></div>
-        <div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot on"></div>
-        <div class="dot"></div><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot"></div>
-      </div>
-      <!-- Digit 0 -->
-      <div class="matrix-digit">
-        <div class="dot"></div><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot"></div>
-        <div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot on"></div>
-        <div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot on"></div><div class="dot on"></div>
-        <div class="dot on"></div><div class="dot"></div><div class="dot on"></div><div class="dot"></div><div class="dot on"></div>
-        <div class="dot on"></div><div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot on"></div>
-        <div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot on"></div>
-        <div class="dot"></div><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot"></div>
-      </div>
-      <!-- Digit 0 -->
-      <div class="matrix-digit">
-        <div class="dot"></div><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot"></div>
-        <div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot on"></div>
-        <div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot on"></div><div class="dot on"></div>
-        <div class="dot on"></div><div class="dot"></div><div class="dot on"></div><div class="dot"></div><div class="dot on"></div>
-        <div class="dot on"></div><div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot on"></div>
-        <div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot on"></div>
-        <div class="dot"></div><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot"></div>
-      </div>
-      <!-- Digit 0 -->
-      <div class="matrix-digit">
-        <div class="dot"></div><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot"></div>
-        <div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot on"></div>
-        <div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot on"></div><div class="dot on"></div>
-        <div class="dot on"></div><div class="dot"></div><div class="dot on"></div><div class="dot"></div><div class="dot on"></div>
-        <div class="dot on"></div><div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot on"></div>
-        <div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot on"></div>
-        <div class="dot"></div><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot"></div>
-      </div>
+    <!-- 4-Digit 5x7 Dot Matrix Display Screen -->
+    <div class="display-screen" id="matrix-display">
+      <!-- Generated via JS -->
     </div>
 
     <div class="indicators">
@@ -288,20 +261,22 @@
         <span class="led-label">Power</span>
       </div>
       <div class="led-col">
-        <div class="light"></div>
+        <div class="light" id="com-light"></div>
         <span class="led-label">Con</span>
       </div>
       <div class="led-col">
-        <div class="light"></div>
-        <span class="led-label" style="font-size: 13px;">⇅</span>
+        <div class="light" id="arrow-light"></div>
+        <span class="led-label" style="font-size: 13px; font-weight: normal;">⇅</span>
       </div>
     </div>
   </div>
 
   <div class="button-section">
     <div class="label-top"><strong>EDS</strong> Controller</div>
-    <button class="btn text-btn">SEARCH</button>
-    <button class="btn symbol-btn">
+    
+    <button class="btn text-btn" id="btn-search">SEARCH</button>
+    
+    <button class="btn symbol-btn" id="btn-toggle">
       <svg class="toggle-svg" viewBox="0 0 26 28" fill="none" xmlns="http://www.w3.org/2000/svg">
         <line x1="18" y1="2" x2="8" y2="26" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
         <line x1="6" y1="22" x2="6" y2="7" stroke="#ffffff" stroke-width="2.2"/>
@@ -310,15 +285,235 @@
         <polyline points="16,17 20,22 24,17" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </button>
-    <button class="btn symbol-btn">+</button>
-    <button class="btn symbol-btn">+</button>
-    <button class="btn symbol-btn">+</button>
-    <button class="btn symbol-btn">+</button>
-    <button class="btn symbol-btn">&minus;</button>
-    <button class="btn text-btn">SEND</button>
+    
+    <button class="btn symbol-btn" id="btn-plus-1000">+</button>
+    <button class="btn symbol-btn" id="btn-plus-100">+</button>
+    <button class="btn symbol-btn" id="btn-plus-1000-sub"> + </button> <!-- Wait, adjust IDs below cleanly -->
+    <!-- Let's map IDs properly in code below -->
+    <button class="btn symbol-btn" id="btn-p1000">+</button>
+    <button class="btn symbol-btn" id="btn-p100">+</button>
+    <button class="btn symbol-btn" id="btn-p10">+</button>
+    <button class="btn symbol-btn" id="btn-p1">+</button>
+    
+    <button class="btn symbol-btn" id="btn-minus">&minus;</button>
+    
+    <button class="btn text-btn" id="btn-send">SEND</button>
+    
     <div class="label-bottom">COOL-AIR</div>
   </div>
+
 </div>
+
+<script>
+  const DIGITS_5x7 = {
+    0: [
+      [0,1,1,1,0],
+      [1,0,0,0,1],
+      [1,0,0,1,1],
+      [1,0,1,0,1],
+      [1,1,0,0,1],
+      [1,0,0,0,1],
+      [0,1,1,1,0]
+    ],
+    1: [
+      [0,0,1,0,0],
+      [0,1,1,0,0],
+      [1,0,1,0,0],
+      [0,0,1,0,0],
+      [0,0,1,0,0],
+      [0,0,1,0,0],
+      [1,1,1,1,1]
+    ],
+    2: [
+      [0,1,1,1,0],
+      [1,0,0,0,1],
+      [0,0,0,0,1],
+      [0,0,1,1,0],
+      [0,1,0,0,0],
+      [1,0,0,0,0],
+      [1,1,1,1,1]
+    ],
+    3: [
+      [0,1,1,1,0],
+      [1,0,0,0,1],
+      [0,0,0,0,1],
+      [0,0,1,1,0],
+      [0,0,0,0,1],
+      [1,0,0,0,1],
+      [0,1,1,1,0]
+    ],
+    4: [
+      [0,0,0,1,0],
+      [0,0,1,1,0],
+      [0,1,0,1,0],
+      [1,0,0,1,0],
+      [1,1,1,1,1],
+      [0,0,0,1,0],
+      [0,0,0,1,0]
+    ],
+    5: [
+      [1,1,1,1,1],
+      [1,0,0,0,0],
+      [1,1,1,1,0],
+      [0,0,0,0,1],
+      [0,0,0,0,1],
+      [1,0,0,0,1],
+      [0,1,1,1,0]
+    ],
+    6: [
+      [0,1,1,1,0],
+      [1,0,0,0,1],
+      [1,0,0,0,0],
+      [1,1,1,1,0],
+      [1,0,0,0,1],
+      [1,0,0,0,1],
+      [0,1,1,1,0]
+    ],
+    7: [
+      [1,1,1,1,1],
+      [0,0,0,0,1],
+      [0,0,0,1,0],
+      [0,0,1,0,0],
+      [0,0,1,0,0],
+      [0,0,1,0,0],
+      [0,0,1,0,0]
+    ],
+    8: [
+      [0,1,1,1,0],
+      [1,0,0,0,1],
+      [1,0,0,0,1],
+      [0,1,1,1,0],
+      [1,0,0,0,1],
+      [1,0,0,0,1],
+      [0,1,1,1,0]
+    ],
+    9: [
+      [0,1,1,1,0],
+      [1,0,0,0,1],
+      [1,0,0,0,1],
+      [0,1,1,1,1],
+      [0,0,0,0,1],
+      [1,0,0,0,1],
+      [0,1,1,1,0]
+    ]
+  };
+
+  const container = document.getElementById('matrix-display');
+  const comLight = document.getElementById('com-light');
+  const arrowLight = document.getElementById('arrow-light');
+  
+  let currentVal = 0;
+  let searchDirectionDesc = true; // true = lowest to highest, false = highest to lowest
+  let lastIncrementStep = 1; // Tracks which + button was pressed last
+
+  // Available sample values list for the SEARCH function logic
+  const availableValues = [0, 150, 420, 1050, 2500, 4890, 7300, 8901, 9999];
+
+  // Build 4 physical 5x7 dot matrix modules
+  const matrixModules = [];
+  for (let m = 0; m < 4; m++) {
+    const modDiv = document.createElement('div');
+    modDiv.className = 'matrix-digit';
+    const dots = [];
+    for (let r = 0; r < 7; r++) {
+      for (let c = 0; c < 5; c++) {
+        const dot = document.createElement('div');
+        dot.className = 'dot';
+        modDiv.appendChild(dot);
+        dots.push(dot);
+      }
+    }
+    container.appendChild(modDiv);
+    matrixModules.push(dots);
+  }
+
+  function updateDisplay(val) {
+    const str = String(val).padStart(4, '0');
+    for (let i = 0; i < 4; i++) {
+      const num = parseInt(str[i], 10);
+      const bitmap = DIGITS_5x7[num];
+      const dots = matrixModules[i];
+      let dotIndex = 0;
+      for (let r = 0; r < 7; r++) {
+        for (let c = 0; c < 5; c++) {
+          if (bitmap[r][c] === 1) {
+            dots[dotIndex].classList.add('on');
+          } else {
+            dots[dotIndex].classList.remove('on');
+          }
+          dotIndex++;
+        }
+      }
+    }
+  }
+
+  updateDisplay(currentVal);
+
+  // Toggle Search Direction Button
+  document.getElementById('btn-toggle').addEventListener('click', () => {
+    searchDirectionDesc = !searchDirectionDesc;
+    if (searchDirectionDesc) {
+      arrowLight.classList.remove('lit-red');
+    } else {
+      arrowLight.classList.add('lit-red');
+    }
+  });
+
+  // SEARCH Button Logic
+  document.getElementById('btn-search').addEventListener('click', () => {
+    // Find next/prev available value based on direction
+    let sorted = [...availableValues].sort((a,b) => a - b);
+    if (!searchDirectionDesc) {
+      sorted.reverse();
+    }
+    
+    let target = sorted.find(v => searchDirectionDesc ? v > currentVal : v < currentVal);
+    if (target === undefined) {
+      target = sorted[0]; // loop around
+    }
+    currentVal = target;
+    updateDisplay(currentVal);
+  });
+
+  // Plus Buttons Logic
+  document.getElementById('btn-p1000').addEventListener('click', () => {
+    currentVal = Math.min(9999, currentVal + 1000);
+    lastIncrementStep = 1000;
+    updateDisplay(currentVal);
+  });
+
+  document.getElementById('btn-p100').addEventListener('click', () => {
+    currentVal = Math.min(9999, currentVal + 100);
+    lastIncrementStep = 100;
+    updateDisplay(currentVal);
+  });
+
+  document.getElementById('btn-p10').addEventListener('click', () => {
+    currentVal = Math.min(9999, currentVal + 10);
+    lastIncrementStep = 10;
+    updateDisplay(currentVal);
+  });
+
+  document.getElementById('btn-p1').addEventListener('click', () => {
+    currentVal = Math.min(9999, currentVal + 1);
+    lastIncrementStep = 1;
+    updateDisplay(currentVal);
+  });
+
+  // Minus Button Logic (lowers value depending on last pressed + button)
+  document.getElementById('btn-minus').addEventListener('click', () => {
+    currentVal = Math.max(0, currentVal - lastIncrementStep);
+    updateDisplay(currentVal);
+  });
+
+  // SEND Button Logic
+  document.getElementById('btn-send').addEventListener('click', () => {
+    comLight.classList.add('lit-red');
+    setTimeout(() => {
+      comLight.classList.remove('lit-red');
+    }, 400);
+  });
+</script>
 
 </body>
 </html>
