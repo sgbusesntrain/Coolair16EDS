@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EDS Controller - Accurate Styling</title>
+<title>EDS Controller</title>
 <style>
   body {
     background-color: #1e1e1e; 
@@ -18,7 +18,7 @@
   .eds-panel {
     background-color: #c9d2db;
     padding: 30px;
-    width: 500px;
+    width: 540px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.8);
     position: relative;
   }
@@ -124,9 +124,10 @@
   .button-section {
     border: 2px solid #1a1a1a;
     border-radius: 10px;
-    padding: 15px 12px;
+    padding: 18px 15px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     position: relative;
   }
 
@@ -156,19 +157,19 @@
     color: #111;
   }
 
-  /* Highly Accurate Button Styling */
+  /* Highly Curved Soft Rectangles Matching the Reference Images */
   .btn {
     background-color: #0d0d0d;
     background-clip: content-box; 
     border: 2px solid #1a1a1a;
     padding: 2px;
-    border-radius: 5px;
+    border-radius: 12px; /* Increased border radius for a smoother, curvier look */
     color: #f2f2f2;
     font-size: 16px;
     font-family: Arial, Helvetica, sans-serif;
-    font-weight: 600;
-    min-width: 40px;
-    height: 40px;
+    font-weight: bold;
+    width: 44px;
+    height: 44px;
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -178,9 +179,9 @@
   }
   
   .btn.text-btn {
-    font-size: 11px;
-    letter-spacing: 0.3px;
-    font-weight: bold;
+    font-size: 10px;
+    letter-spacing: 0px;
+    text-align: center;
   }
 
   .btn:active {
@@ -191,15 +192,15 @@
   /* Custom CSS drawing for the Up/Down Arrow with Slash icon */
   .custom-icon-toggle {
     position: relative;
-    width: 16px;
-    height: 18px;
+    width: 18px;
+    height: 20px;
   }
   .custom-icon-toggle .arrow-up {
     position: absolute;
     left: 0px;
     top: 2px;
     width: 2px;
-    height: 12px;
+    height: 13px;
     background: #fff;
   }
   .custom-icon-toggle .arrow-up::before {
@@ -208,9 +209,9 @@
     top: 0;
     left: -3px;
     border: solid #fff;
-    border-width: 0 2.5px 2.5px 0;
+    border-width: 0 3px 3px 0;
     display: inline-block;
-    padding: 2.5px;
+    padding: 3px;
     transform: rotate(-135deg);
   }
   .custom-icon-toggle .arrow-down {
@@ -218,7 +219,7 @@
     right: 0px;
     bottom: 2px;
     width: 2px;
-    height: 12px;
+    height: 13px;
     background: #fff;
   }
   .custom-icon-toggle .arrow-down::before {
@@ -227,17 +228,17 @@
     bottom: 0;
     right: -3px;
     border: solid #fff;
-    border-width: 0 2.5px 2.5px 0;
+    border-width: 0 3px 3px 0;
     display: inline-block;
-    padding: 2.5px;
+    padding: 3px;
     transform: rotate(45deg);
   }
   .custom-icon-toggle .slash {
     position: absolute;
     top: 0px;
-    left: 7px;
+    left: 8px;
     width: 2px;
-    height: 18px;
+    height: 20px;
     background: #fff;
     transform: rotate(25deg);
   }
