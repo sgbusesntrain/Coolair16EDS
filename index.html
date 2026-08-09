@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EDS Controller - Independent Digit Rollover</title>
+<title>EDS Controller - Auto-Cycling Search</title>
 <style>
   body {
     background-color: #1e1e1e; 
@@ -399,9 +399,10 @@
   const comLight = document.getElementById('com-light');
   const arrowLight = document.getElementById('arrow-light');
   
-  let currentVal = 0; // Stored as integer 0 - 9999
+  let currentVal = 0; 
   let searchDirectionDesc = false; 
   let lastIncrementStep = 1;
+  let searchInterval = null;
 
   const availableValues = [0, 1111, 2222, 9999];
 
@@ -442,7 +443,6 @@
     }
   }
 
-  // Independent column adder: adds step value (1000, 100, 10, or 1) strictly to that specific digit column with independent wrap-around (0-9)
   function addIndependent(val, step) {
     let str = String(val).padStart(4, '0');
     let d0 = parseInt(str[0], 10);
@@ -458,7 +458,6 @@
     return parseInt(`${d0}${d1}${d2}${d3}`, 10);
   }
 
-  // Independent column subtractor: subtracts step value strictly from that specific digit column with independent wrap-around (0-9)
   function subIndependent(val, step) {
     let str = String(val).padStart(4, '0');
     let d0 = parseInt(str[0], 10);
@@ -474,10 +473,18 @@
     return parseInt(`${d0}${d1}${d2}${d3}`, 10);
   }
 
+  function stopAutoSearch() {
+    if (searchInterval) {
+      clearInterval(searchInterval);
+      searchInterval = null;
+    }
+  }
+
   updateDisplay(currentVal);
 
   // Toggle Search Direction Button (Arrow)
   document.getElementById('btn-toggle').addEventListener('click', () => {
+    stopAutoSearch();
     searchDirectionDesc = !searchDirectionDesc;
     if (!searchDirectionDesc) {
       arrowLight.classList.remove('lit-red');
@@ -486,54 +493,79 @@
     }
   });
 
-  // SEARCH Button Logic
+  // SEARCH Button Logic (Auto-cycling every 2 seconds with wrap-around)
   document.getElementById('btn-search').addEventListener('click', () => {
+    stopAutoSearch();
+
     let sorted = [...availableValues].sort((a, b) => a - b);
     if (searchDirectionDesc) {
       sorted.reverse();
     }
-    
-    let target = sorted.find(v => searchDirectionDesc ? v < currentVal : v > currentVal);
-    if (target === undefined) {
-      target = sorted[0];
+
+    // Find the next index in sequence, wrapping back to the beginning if at the end
+    let currentIndex = sorted.indexOf(currentVal);
+    if (currentIndex === -1) {
+      // If current value isn't directly in the list, find the closest matching step
+      currentIndex = sorted.findIndex(v => searchDirectionDesc ? v < currentVal : v > currentVal);
+      if (currentIndex === -1) currentIndex = 0;
+    } else {
+      currentIndex = (currentIndex + 1) % sorted.length;
     }
-    currentVal = target;
+
+    currentVal = sorted[currentIndex];
     updateDisplay(currentVal);
+
+    // Continue cycling every 2 seconds
+    searchInterval = setInterval(() => {
+      let activeSorted = [...availableValues].sort((a, b) => a - b);
+      if (searchDirectionDesc) {
+        activeSorted.reverse();
+      }
+      let idx = activeSorted.indexOf(currentVal);
+      idx = (idx + 1) % activeSorted.length;
+      currentVal = activeSorted[idx];
+      updateDisplay(currentVal);
+    }, 2000);
   });
 
-  // Plus Buttons with independent single-digit rollover
+  // Manual actions stop the automated search cycle
   document.getElementById('btn-p1000').addEventListener('click', () => {
+    stopAutoSearch();
     lastIncrementStep = 1000;
     currentVal = addIndependent(currentVal, 1000);
     updateDisplay(currentVal);
   });
 
   document.getElementById('btn-p100').addEventListener('click', () => {
+    stopAutoSearch();
     lastIncrementStep = 100;
     currentVal = addIndependent(currentVal, 100);
     updateDisplay(currentVal);
   });
 
   document.getElementById('btn-p10').addEventListener('click', () => {
+    stopAutoSearch();
     lastIncrementStep = 10;
     currentVal = addIndependent(currentVal, 10);
     updateDisplay(currentVal);
   });
 
   document.getElementById('btn-p1').addEventListener('click', () => {
+    stopAutoSearch();
     lastIncrementStep = 1;
     currentVal = addIndependent(currentVal, 1);
     updateDisplay(currentVal);
   });
 
-  // Minus Button Logic with independent single-digit reverse rollover
   document.getElementById('btn-minus').addEventListener('click', () => {
+    stopAutoSearch();
     currentVal = subIndependent(currentVal, lastIncrementStep);
     updateDisplay(currentVal);
   });
 
   // SEND Button Logic
   document.getElementById('btn-send').addEventListener('click', () => {
+    stopAutoSearch();
     comLight.classList.add('lit-red');
     setTimeout(() => {
       comLight.classList.remove('lit-red');
