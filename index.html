@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EDS Controller - Refined Icon Alignment & Borders</title>
+<title>EDS Controller - True 5x7 LED Dot Matrix & Panel Styling</title>
 <style>
   body {
     background-color: #1e1e1e; 
@@ -18,7 +18,7 @@
   .eds-panel {
     background-color: #c9d2db;
     padding: 30px;
-    width: 610px;
+    width: 620px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.8);
     position: relative;
     box-sizing: border-box;
@@ -71,25 +71,52 @@
     background: #c2883a;
   }
 
+  /* --- DOT MATRIX DISPLAY SCREEN --- */
   .display-screen {
-    background: #0d0d0d;
-    border-radius: 6px;
-    padding: 10px 25px;
-    min-width: 180px;
-    text-align: center;
-  }
-  .led-text {
-    color: #ff3333;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 42px;
-    font-weight: bold;
-    letter-spacing: 14px;
-    margin-right: -14px;
-    text-shadow: 
-      1px 1px 0px rgba(0,0,0,0.8),
-      0 0 6px rgba(255, 51, 51, 0.8);
+    background: #080808;
+    border: 2px solid #1a1a1a;
+    border-radius: 8px;
+    padding: 14px 20px;
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.9);
   }
 
+  /* 5x7 Dot Matrix Digit Grid Module */
+  .matrix-digit {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(7, 1fr);
+    gap: 3.5px;
+    background: #120303;
+    padding: 6px;
+    border-radius: 3px;
+    border: 1px solid #220808;
+    box-shadow: inset 0 0 4px rgba(0,0,0,0.8);
+  }
+
+  /* Individual Matrix LED Dots */
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    /* Unlit State: Faint dark-red visible dot wells */
+    background-color: #310808;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.9);
+    transition: background-color 0.05s ease, box-shadow 0.05s ease;
+  }
+
+  /* Lit LED Dots */
+  .dot.on {
+    background-color: #ff3333;
+    box-shadow: 
+      0 0 4px #ff3333,
+      0 0 8px #ff1a1a;
+  }
+
+  /* LED Indicators */
   .indicators {
     display: flex;
     gap: 12px;
@@ -121,7 +148,7 @@
     font-weight: bold;
   }
 
-  /* --- BOTTOM ROW --- */
+  /* --- BOTTOM BUTTON SECTION --- */
   .button-section {
     border: 2px solid #1a1a1a;
     border-radius: 10px;
@@ -158,52 +185,59 @@
     color: #111;
   }
 
-  /* Base Button Outer Bezels - Restored Visible Double Borders for ALL buttons */
+  /* Base Button Styling with Crisp White Double-Line Border */
   .btn {
     background-color: #0d0d0d;
-    background-clip: padding-box; 
     border: 2px solid #1a1a1a;
-    outline: 2px solid #f2f2f2; /* Creates the outer high-contrast border ring visible in photo */
-    outline-offset: -4px;
+    box-shadow: inset 0 0 0 2px #ffffff;
     border-radius: 10px;
-    color: #f2f2f2;
-    height: 48px;
+    color: #ffffff;
+    height: 52px;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: inset 0 1px 1px rgba(255,255,255,0.15);
     transition: transform 0.05s ease, background-color 0.05s ease;
     box-sizing: border-box;
   }
 
   /* Symbol Buttons (+ / - / Toggle) */
   .btn.symbol-btn {
-    width: 46px;
-    flex: 0 0 46px;
-    font-size: 38px; /* Bigger '+' and '-' symbols */
+    width: 48px;
+    flex: 0 0 48px;
     font-family: Arial, Helvetica, sans-serif;
-    font-weight: normal;
     line-height: 1; 
   }
 
-  /* SEARCH & SEND Buttons - Identical Length with crisp border rings */
+  /* Bigger '+' buttons */
+  .btn.plus-btn {
+    font-size: 34px;
+    font-weight: 300;
+  }
+
+  /* Centered '-' button */
+  .btn.minus-btn {
+    font-size: 38px;
+    font-weight: 300;
+    padding-bottom: 3px;
+  }
+
+  /* SEARCH & SEND Buttons - Matches the thin, condensed font of the second pic */
   .btn.text-btn {
-    width: 76px;
-    flex: 0 0 76px;
-    font-size: 13.5px;
-    font-family: 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif;
-    font-weight: bold;
-    letter-spacing: -0.2px;
-    padding: 0;
+    width: 82px;
+    flex: 0 0 82px; 
+    font-size: 16px;
+    font-family: 'Arial Narrow', 'Trebuchet MS', sans-serif;
+    font-weight: normal; 
+    letter-spacing: -1px; 
+    transform: scaleX(0.65); 
   }
 
   .btn:active {
-    transform: translateY(1px);
+    transform: translateY(1px) scale(0.98);
     background-color: #1a1a1a;
   }
 
-  /* Perfect SVG Centered Toggle Icon (Arrows centered directly on diagonal slash) */
   .toggle-svg {
     width: 26px;
     height: 28px;
@@ -228,8 +262,9 @@
       </div>
     </div>
 
-    <div class="display-screen">
-      <div class="led-text" id="display">1111</div>
+    <!-- 4-Digit 5x7 Dot Matrix Display Screen -->
+    <div class="display-screen" id="matrix-display">
+      <!-- 4 x 5x7 modules generated dynamically via JS -->
     </div>
 
     <div class="indicators">
@@ -255,12 +290,9 @@
     
     <button class="btn symbol-btn" id="btn-toggle">
       <svg class="toggle-svg" viewBox="0 0 26 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Centered Slash -->
         <line x1="18" y1="2" x2="8" y2="26" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
-        <!-- Left Up Arrow (Stem intersects center line) -->
         <line x1="6" y1="22" x2="6" y2="7" stroke="#ffffff" stroke-width="2.2"/>
         <polyline points="2,11 6,6 10,11" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-        <!-- Right Down Arrow (Stem intersects center line) -->
         <line x1="20" y1="6" x2="20" y2="21" stroke="#ffffff" stroke-width="2.2"/>
         <polyline points="16,17 20,22 24,17" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
@@ -271,7 +303,7 @@
     <button class="btn symbol-btn plus-btn">+</button>
     <button class="btn symbol-btn plus-btn">+</button>
     
-    <button class="btn symbol-btn" id="btn-minus">&minus;</button>
+    <button class="btn symbol-btn minus-btn" id="btn-minus">&minus;</button>
     
     <button class="btn text-btn" id="btn-send">SEND</button>
     
@@ -281,20 +313,157 @@
 </div>
 
 <script>
-  const display = document.getElementById('display');
-  const comLight = document.getElementById('com-light');
-  let currentVal = 1111;
+  // 5x7 Dot-Matrix Bitmaps (Updated 0-9 matching image_11, image_12, and image_13)
+  const DIGITS_5x7 = {
+    0: [ // Features the diagonal slash seen in image_11 and image_13
+      [0,1,1,1,0],
+      [1,0,0,0,1],
+      [1,0,0,1,1],
+      [1,0,1,0,1],
+      [1,1,0,0,1],
+      [1,0,0,0,1],
+      [0,1,1,1,0]
+    ],
+    1: [ // Features top-left flag and bottom serif seen in image_11 and image_13
+      [0,0,1,0,0],
+      [0,1,1,0,0],
+      [0,0,1,0,0],
+      [0,0,1,0,0],
+      [0,0,1,0,0],
+      [0,0,1,0,0],
+      [0,1,1,1,0]
+    ],
+    2: [
+      [0,1,1,1,0],
+      [1,0,0,0,1],
+      [0,0,0,0,1],
+      [0,0,0,1,0],
+      [0,0,1,0,0],
+      [0,1,0,0,0],
+      [1,1,1,1,1]
+    ],
+    3: [
+      [0,1,1,1,0],
+      [1,0,0,0,1],
+      [0,0,0,0,1],
+      [0,0,1,1,0],
+      [0,0,0,0,1],
+      [1,0,0,0,1],
+      [0,1,1,1,0]
+    ],
+    4: [ // From image_12
+      [0,0,0,1,0],
+      [0,0,1,1,0],
+      [0,1,0,1,0],
+      [1,0,0,1,0],
+      [1,1,1,1,1],
+      [0,0,0,1,0],
+      [0,0,0,1,0]
+    ],
+    5: [ // From image_12
+      [1,1,1,1,1],
+      [1,0,0,0,0],
+      [1,1,1,1,0],
+      [0,0,0,0,1],
+      [0,0,0,0,1],
+      [1,0,0,0,1],
+      [0,1,1,1,0]
+    ],
+    6: [ // From image_12
+      [0,1,1,1,0],
+      [1,0,0,0,0],
+      [1,0,0,0,0],
+      [1,1,1,1,0],
+      [1,0,0,0,1],
+      [1,0,0,0,1],
+      [0,1,1,1,0]
+    ],
+    7: [ // From image_12 (Vertical drop at the bottom)
+      [1,1,1,1,1],
+      [0,0,0,0,1],
+      [0,0,0,1,0],
+      [0,0,1,0,0],
+      [0,1,0,0,0],
+      [0,1,0,0,0],
+      [0,1,0,0,0]
+    ],
+    8: [ // From image_11
+      [0,1,1,1,0],
+      [1,0,0,0,1],
+      [1,0,0,0,1],
+      [0,1,1,1,0],
+      [1,0,0,0,1],
+      [1,0,0,0,1],
+      [0,1,1,1,0]
+    ],
+    9: [ // From image_11
+      [0,1,1,1,0],
+      [1,0,0,0,1],
+      [1,0,0,0,1],
+      [0,1,1,1,1],
+      [0,0,0,0,1],
+      [0,0,0,0,1],
+      [0,1,1,1,0]
+    ]
+  };
 
+  const container = document.getElementById('matrix-display');
+  const comLight = document.getElementById('com-light');
+  let currentVal = 8901; // Set default to one of the references
+
+  // Build 4 physical 5x7 dot matrix modules with 35 dots each
+  const matrixModules = [];
+  for (let m = 0; m < 4; m++) {
+    const modDiv = document.createElement('div');
+    modDiv.className = 'matrix-digit';
+    const dots = [];
+    for (let r = 0; r < 7; r++) {
+      for (let c = 0; c < 5; c++) {
+        const dot = document.createElement('div');
+        dot.className = 'dot';
+        modDiv.appendChild(dot);
+        dots.push(dot);
+      }
+    }
+    container.appendChild(modDiv);
+    matrixModules.push(dots);
+  }
+
+  // Render a 4-digit number onto the LED matrix screen
+  function updateDisplay(val) {
+    const str = String(val).padStart(4, '0');
+    for (let i = 0; i < 4; i++) {
+      const num = parseInt(str[i], 10);
+      const bitmap = DIGITS_5x7[num];
+      const dots = matrixModules[i];
+      let dotIndex = 0;
+      for (let r = 0; r < 7; r++) {
+        for (let c = 0; c < 5; c++) {
+          if (bitmap[r][c] === 1) {
+            dots[dotIndex].classList.add('on');
+          } else {
+            dots[dotIndex].classList.remove('on');
+          }
+          dotIndex++;
+        }
+      }
+    }
+  }
+
+  // Initialize display
+  updateDisplay(currentVal);
+
+  // Button Listeners
   document.querySelectorAll('.plus-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       currentVal = (currentVal + 1) % 10000;
-      display.textContent = String(currentVal).padStart(4, '0');
+      updateDisplay(currentVal);
     });
   });
 
   document.getElementById('btn-minus').addEventListener('click', () => {
     currentVal = (currentVal - 1 + 10000) % 10000;
-    display.textContent = String(currentVal).padStart(4, '0');
+    updateDisplay(currentVal);
   });
 
   document.getElementById('btn-send').addEventListener('click', () => {
