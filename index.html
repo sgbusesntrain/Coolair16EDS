@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EDS Controller - Exact Replica</title>
 <style>
-  /* Dark background to make the panel pop */
   body {
     background-color: #1e1e1e; 
     display: flex;
@@ -16,16 +15,15 @@
     font-family: Arial, sans-serif;
   }
 
-  /* The main flat grey/blue panel */
   .eds-panel {
-    background-color: #c9d2db; /* Matched to the cool light-grey in the image */
+    background-color: #c9d2db;
     padding: 30px;
     width: 500px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.8);
     position: relative;
   }
 
-  /* --- TOP ROW: Port, Screen, LEDs --- */
+  /* --- TOP ROW --- */
   .top-row {
     display: flex;
     justify-content: space-between;
@@ -34,7 +32,6 @@
     padding: 0 10px;
   }
 
-  /* 1. Connection Port (Top Left) */
   .port-wrapper {
     display: flex;
     align-items: center;
@@ -73,7 +70,6 @@
     background: #c2883a;
   }
 
-  /* 2. Main Display (Center) */
   .display-screen {
     background: #0d0d0d;
     border-radius: 6px;
@@ -87,14 +83,12 @@
     font-size: 42px;
     font-weight: bold;
     letter-spacing: 14px;
-    margin-right: -14px; /* Offset the last letter's spacing to keep it centered */
-    /* Creating a subtle dot-matrix glow */
+    margin-right: -14px;
     text-shadow: 
       1px 1px 0px rgba(0,0,0,0.8),
       0 0 6px rgba(255, 51, 51, 0.8);
   }
 
-  /* 3. Indicator LEDs (Top Right) */
   .indicators {
     display: flex;
     gap: 12px;
@@ -110,7 +104,7 @@
     width: 14px;
     height: 14px;
     border-radius: 50%;
-    background: #111; /* Unlit black */
+    background: #111;
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
   }
   .light.lit-red {
@@ -128,11 +122,10 @@
   .led-label.symbol {
     font-size: 14px;
     font-weight: normal;
-    margin-top: -3px; /* Adjust alignment for the taller arrow character */
+    margin-top: -3px;
   }
 
-
-  /* --- BOTTOM ROW: Border and Buttons --- */
+  /* --- BOTTOM ROW --- */
   .button-section {
     border: 2px solid #1a1a1a;
     border-radius: 10px;
@@ -142,12 +135,11 @@
     position: relative;
   }
 
-  /* "EDS Controller" text masking the top border */
   .label-top {
     position: absolute;
     top: -12px;
     left: 15px;
-    background: #c9d2db; /* Matches panel background perfectly to 'cut' the line */
+    background: #c9d2db;
     padding: 0 8px;
     font-size: 18px;
     color: #111;
@@ -157,7 +149,6 @@
     font-weight: 900;
   }
 
-  /* "COOL-AIR" text masking the bottom border */
   .label-bottom {
     position: absolute;
     bottom: -9px;
@@ -170,20 +161,16 @@
     color: #111;
   }
 
-  /* The 8 Buttons */
   .btn {
-    /* The padding and background-clip creates the "double border" gap effect */
     background-color: #000;
     background-clip: content-box; 
     border: 2px solid #1a1a1a;
     padding: 2px;
     border-radius: 6px;
-    
     color: #fff;
     font-size: 16px;
     font-weight: normal;
     font-family: Arial, sans-serif;
-    
     min-width: 40px;
     height: 42px;
     cursor: pointer;
@@ -204,15 +191,70 @@
     background-color: #222;
   }
 
+  /* Custom CSS drawing for the Up/Down Arrow with Slash icon */
+  .custom-icon-toggle {
+    position: relative;
+    width: 18px;
+    height: 20px;
+  }
+  /* Left Up Arrow */
+  .custom-icon-toggle .arrow-up {
+    position: absolute;
+    left: 1px;
+    top: 2px;
+    width: 2px;
+    height: 14px;
+    background: #fff;
+  }
+  .custom-icon-toggle .arrow-up::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -3px;
+    border: solid #fff;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(-135deg);
+  }
+  /* Right Down Arrow */
+  .custom-icon-toggle .arrow-down {
+    position: absolute;
+    right: 1px;
+    bottom: 2px;
+    width: 2px;
+    height: 14px;
+    background: #fff;
+  }
+  .custom-icon-toggle .arrow-down::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: -3px;
+    border: solid #fff;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(45deg);
+  }
+  /* Diagonal Slash */
+  .custom-icon-toggle .slash {
+    position: absolute;
+    top: 1px;
+    left: 8px;
+    width: 2px;
+    height: 18px;
+    background: #fff;
+    transform: rotate(25deg);
+  }
+
 </style>
 </head>
 <body>
 
 <div class="eds-panel">
   
-  <!-- Top Section (Port, Display, Lights) -->
   <div class="top-row">
-    <!-- Port Graphic -->
     <div class="port-wrapper">
       <div class="port-nub"></div>
       <div class="port-main">
@@ -225,12 +267,10 @@
       </div>
     </div>
 
-    <!-- 1111 Display -->
     <div class="display-screen">
       <div class="led-text">1111</div>
     </div>
 
-    <!-- LEDs -->
     <div class="indicators">
       <div class="led-col">
         <div class="light lit-red"></div>
@@ -247,12 +287,17 @@
     </div>
   </div>
 
-  <!-- Bottom Section (Wrapped Border and Buttons) -->
   <div class="button-section">
     <div class="label-top"><strong>EDS</strong> Controller</div>
     
     <button class="btn text-btn">SEARCH</button>
-    <button class="btn">⇅</button>
+    <button class="btn">
+      <div class="custom-icon-toggle">
+        <div class="arrow-up"></div>
+        <div class="slash"></div>
+        <div class="arrow-down"></div>
+      </div>
+    </button>
     <button class="btn">+</button>
     <button class="btn">+</button>
     <button class="btn">+</button>
