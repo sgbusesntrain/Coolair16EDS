@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EDS Controller - Interactive Buttons & Logic</title>
+<title>EDS Controller - Final Button Layout & Search Codes</title>
 <style>
   body {
     background-color: #1e1e1e; 
@@ -286,14 +286,8 @@
       </svg>
     </button>
     
-    <button class="btn symbol-btn" id="btn-plus-1000">+</button>
-    <button class="btn symbol-btn" id="btn-plus-100">+</button>
-    <button class="btn symbol-btn" id="btn-plus-1000-sub"> + </button> <!-- Wait, adjust IDs below cleanly -->
-    <!-- Let's map IDs properly in code below -->
-    <button class="btn symbol-btn" id="btn-p1000">+</button>
-    <button class="btn symbol-btn" id="btn-p100">+</button>
-    <button class="btn symbol-btn" id="btn-p10">+</button>
-    <button class="btn symbol-btn" id="btn-p1">+</button>
+    <!-- Single consolidated + button -->
+    <button class="btn symbol-btn" id="btn-plus">+</button>
     
     <button class="btn symbol-btn" id="btn-minus">&minus;</button>
     
@@ -403,13 +397,12 @@
   const arrowLight = document.getElementById('arrow-light');
   
   let currentVal = 0;
-  let searchDirectionDesc = true; // true = lowest to highest, false = highest to lowest
-  let lastIncrementStep = 1; // Tracks which + button was pressed last
+  let searchDirectionDesc = false; // false = lowest to highest (arrow off), true = highest to lowest (arrow on)
+  let lastIncrementStep = 1;
 
-  // Available sample values list for the SEARCH function logic
-  const availableValues = [0, 150, 420, 1050, 2500, 4890, 7300, 8901, 9999];
+  // Available future EDS codes for searching
+  const availableValues = [0, 1111, 2222, 9999];
 
-  // Build 4 physical 5x7 dot matrix modules
   const matrixModules = [];
   for (let m = 0; m < 4; m++) {
     const modDiv = document.createElement('div');
@@ -449,58 +442,39 @@
 
   updateDisplay(currentVal);
 
-  // Toggle Search Direction Button
+  // Toggle Search Direction Button (Arrow)
   document.getElementById('btn-toggle').addEventListener('click', () => {
     searchDirectionDesc = !searchDirectionDesc;
-    if (searchDirectionDesc) {
-      arrowLight.classList.remove('lit-red');
+    if (!searchDirectionDesc) {
+      arrowLight.classList.remove('lit-red'); // Lowest to highest
     } else {
-      arrowLight.classList.add('lit-red');
+      arrowLight.classList.add('lit-red'); // Highest to lowest
     }
   });
 
-  // SEARCH Button Logic
+  // SEARCH Button Logic (cycles through 0, 1111, 2222, 9999 based on direction)
   document.getElementById('btn-search').addEventListener('click', () => {
-    // Find next/prev available value based on direction
-    let sorted = [...availableValues].sort((a,b) => a - b);
-    if (!searchDirectionDesc) {
-      sorted.reverse();
+    let sorted = [...availableValues].sort((a, b) => a - b);
+    if (searchDirectionDesc) {
+      sorted.reverse(); // Highest to lowest
     }
     
-    let target = sorted.find(v => searchDirectionDesc ? v > currentVal : v < currentVal);
+    let target = sorted.find(v => searchDirectionDesc ? v < currentVal : v > currentVal);
     if (target === undefined) {
-      target = sorted[0]; // loop around
+      target = sorted[0]; // Loop around
     }
     currentVal = target;
     updateDisplay(currentVal);
   });
 
-  // Plus Buttons Logic
-  document.getElementById('btn-p1000').addEventListener('click', () => {
-    currentVal = Math.min(9999, currentVal + 1000);
-    lastIncrementStep = 1000;
-    updateDisplay(currentVal);
-  });
-
-  document.getElementById('btn-p100').addEventListener('click', () => {
-    currentVal = Math.min(9999, currentVal + 100);
-    lastIncrementStep = 100;
-    updateDisplay(currentVal);
-  });
-
-  document.getElementById('btn-p10').addEventListener('click', () => {
-    currentVal = Math.min(9999, currentVal + 10);
-    lastIncrementStep = 10;
-    updateDisplay(currentVal);
-  });
-
-  document.getElementById('btn-p1').addEventListener('click', () => {
+  // Single + Button Logic (increments by 1)
+  document.getElementById('btn-plus').addEventListener('click', () => {
     currentVal = Math.min(9999, currentVal + 1);
     lastIncrementStep = 1;
     updateDisplay(currentVal);
   });
 
-  // Minus Button Logic (lowers value depending on last pressed + button)
+  // Minus Button Logic (lowers value based on last increment step)
   document.getElementById('btn-minus').addEventListener('click', () => {
     currentVal = Math.max(0, currentVal - lastIncrementStep);
     updateDisplay(currentVal);
