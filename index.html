@@ -3,192 +3,193 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>COOL-AIR EDS Controller</title>
+<title>Accurate COOL-AIR EDS Replica</title>
 <style>
+  /* 1. Neutral Grey Background */
   body {
-    background-color: #218c74; 
+    background-color: #d1d1d1; /* Matching the clean grey in image_3.png */
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
   }
 
+  /* 2. Main Silver Controller Panel */
   .eds-panel {
-    background: #a9c6e2; /* Matching the slight bluish-silver tint */
+    background: linear-gradient(135deg, #e1e1e1, #c8c8c8); /* Subtle metal texture */
     border: 1px solid #777;
-    border-radius: 2px;
-    padding: 15px 25px 25px 25px;
-    position: relative;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5), inset 1px 1px 3px rgba(255, 255, 255, 0.8);
-    width: 380px; /* Wider to fit 8 buttons */
+    border-radius: 4px;
+    padding: 10px;
+    box-shadow: 
+      0 10px 30px rgba(0,0,0,0.3), /* Depth shadow */
+      inset 0 1px 1px rgba(255,255,255,0.8); /* Metal shine */
+    width: 380px;
   }
 
-  /* Screen and LEDs */
-  .screen-bezel {
-    background: #111;
-    border: 2px solid #000;
-    border-radius: 4px;
+  /* 3. Top Black Display Bar */
+  .display-bar {
+    background: #0d0d0d;
+    border: 1px solid #000;
+    border-radius: 3px;
     padding: 10px 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 25px;
+    margin-bottom: 8px;
     box-shadow: inset 0 0 10px #000;
   }
 
-  .sensor {
-    width: 25px;
-    height: 12px;
-    background: #2a2a2a;
-    border-radius: 2px;
-  }
-
+  /* Dot-matrix style LED Numbers (more accurate than previous attempt) */
   .led-display {
-    color: #ff3333;
+    color: #ff3c00; /* Red-orange glow */
     font-family: 'Courier New', Courier, monospace; 
-    font-size: 36px;
+    font-size: 32px;
     font-weight: bold;
     text-shadow: 
-      2px 0 0px #111, -2px 0 0px #111, 0 2px 0px #111, 0 -2px 0px #111,
-      0 0 8px #ff0000; /* Simulating the dot-matrix dots slightly */
-    letter-spacing: 4px;
-    margin: 0 15px;
+      0 0 5px #ff3c00, /* Glow */
+      1px 1px 0px rgba(255,0,0,0.3); /* Slight double dot effect */
+    letter-spacing: 5px; /* Important for the dot-matrix separation */
   }
 
+  /* Power/Com/N Indicators */
   .indicators {
     display: flex;
-    gap: 10px;
+    gap: 12px;
     text-align: center;
+    font-size: 8px;
+    color: #888;
   }
-  
+
   .led-group {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 3px;
+    gap: 2px;
   }
 
   .led {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
-    background: #330000; 
+    background: #2a0000; /* Dark unlit red */
   }
   
+  /* The active Power light */
   .led.red-on {
-    background: #ff3333;
-    box-shadow: 0 0 6px #ff3333;
+    background: #ff1100;
+    box-shadow: 
+      0 0 8px #ff1100, 
+      0 0 15px #ff1100;
   }
 
-  .led-label {
-    font-size: 7px;
-    color: #666;
-  }
-
-  /* Fieldset used to create the wrapping line with text */
-  .button-group {
-    border: 1px solid #333;
-    border-radius: 4px;
-    padding: 10px 5px;
-    display: flex;
-    justify-content: space-between;
+  /* 4. Lower Button Area */
+  .button-bar {
     position: relative;
-    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #999; /* Sharp divider line */
   }
 
-  .legend-title {
-    font-size: 12px;
-    color: #000;
-    padding: 0 5px;
-    margin-left: -5px; /* Pull it slightly left to match image */
-  }
-
-  .legend-title strong {
-    font-size: 14px;
-  }
-
-  .brand-bottom {
+  .title-eds {
     position: absolute;
-    bottom: -8px;
-    right: 15px;
-    background: #a9c6e2;
-    padding: 0 5px;
+    top: 2px;
+    left: 10px;
     font-size: 10px;
     font-weight: bold;
-    font-style: italic;
-    color: #333;
+    color: #222;
   }
 
-  /* 8 Push Buttons */
+  .title-eds span { font-weight: normal; color: #555; }
+
+  /* Brand label (bottom-right, precise font) */
+  .title-coolair {
+    position: absolute;
+    bottom: -15px;
+    right: 15px;
+    font-size: 11px;
+    font-weight: bold;
+    font-style: italic; /* Corrected to match the image */
+    color: #444;
+  }
+
+  /* Row of 8 discrete buttons */
+  .button-row {
+    display: flex;
+    justify-content: space-around;
+    padding: 5px 0;
+  }
+
+  /* Black, raised mechanical buttons */
   .btn {
     background: #111;
-    color: #ddd;
+    color: #eee;
     border: 1px solid #000;
-    border-radius: 3px;
-    box-shadow: 0 2px 3px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.3);
+    border-radius: 1px; /* Slightly squarer than previous */
     cursor: pointer;
-    font-size: 14px;
+    font-size: 11px;
     font-weight: bold;
-    padding: 4px 6px;
-    min-width: 30px;
+    padding: 6px 4px;
+    min-width: 32px;
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-
-  .btn.text-btn {
-    font-size: 10px;
-    padding: 4px 8px;
+    font-family: Arial, sans-serif;
+    text-transform: uppercase;
+    /* Creating the 'raised' look */
+    box-shadow: 
+      0 3px 0 #000, /* The bottom side of the button */
+      0 4px 6px rgba(0,0,0,0.6); /* Depth shadow */
+    transition: all 0.1s;
   }
   
   .btn:active {
-    box-shadow: inset 0 1px 4px rgba(0,0,0,0.9);
-    transform: translateY(2px);
+    transform: translateY(3px); /* Press down effect */
+    box-shadow: 0 0px 0 #000, 0 1px 2px rgba(0,0,0,0.8);
   }
+
 </style>
 </head>
 <body>
 
 <div class="eds-panel">
-  <!-- Main Black Screen Area -->
-  <div class="screen-bezel">
-    <div class="sensor"></div>
+  <!-- Top Black Bar (Display & Indicators) -->
+  <div class="display-bar">
     <div class="led-display">0000</div>
     <div class="indicators">
       <div class="led-group">
         <div class="led red-on"></div>
-        <span class="led-label">Power</span>
+        <span>Power</span>
       </div>
       <div class="led-group">
         <div class="led"></div>
-        <span class="led-label">Com</span>
+        <span>Com</span>
       </div>
       <div class="led-group">
         <div class="led"></div>
-        <span class="led-label">N</span>
+        <span>N</span>
       </div>
     </div>
   </div>
 
-  <!-- Buttons wrapped in a border with text -->
-  <fieldset class="button-group">
-    <legend class="legend-title"><strong>EDS</strong> Controller</legend>
-    <button class="btn text-btn">SEARCH</button>
-    <button class="btn">⇅</button>
-    <button class="btn">+</button>
-    <button class="btn">+</button>
-    <button class="btn">+</button>
-    <button class="btn">+</button>
-    <button class="btn">-</button>
-    <button class="btn text-btn">SEND</button>
-    <div class="brand-bottom">COOL-AIR</div>
-  </fieldset>
-</div>
-
-</body>
-</html>
+  <!-- Lower Silver Bar (Buttons) -->
+  <div class="button-bar">
+    <div class="title-eds">EDS <span>Controller</span></div>
+    
+    <!-- Exact Row of 8 Mechanical Buttons -->
+    <div class="button-row">
+      <button class="btn">SEARCH</button>
+      <button class="btn">⇅</button>
+      <button class="btn">+</button>
+      <button class="btn">+</button>
+      <button class="btn">+</button>
+      <button class="btn">+</button>
+      <button class="btn">-</button>
+      <button class="btn">SEND</button>
+    </div>
+    
+    <div class="title-coolair">COOL-AIR</div>
+  </div>
 </div>
 
 </body>
