@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EDS Controller - True 5x7 LED Dot Matrix & Panel Styling</title>
+<title>EDS Controller - True 5x7 Dot Matrix & Reverted Buttons</title>
 <style>
   body {
     background-color: #1e1e1e; 
@@ -18,7 +18,7 @@
   .eds-panel {
     background-color: #c9d2db;
     padding: 30px;
-    width: 620px;
+    width: 610px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.8);
     position: relative;
     box-sizing: border-box;
@@ -102,7 +102,6 @@
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    /* Unlit State: Faint dark-red visible dot wells */
     background-color: #310808;
     box-shadow: inset 0 1px 2px rgba(0,0,0,0.9);
     transition: background-color 0.05s ease, box-shadow 0.05s ease;
@@ -148,7 +147,7 @@
     font-weight: bold;
   }
 
-  /* --- BOTTOM BUTTON SECTION --- */
+  /* --- BOTTOM BUTTON SECTION (Reverted) --- */
   .button-section {
     border: 2px solid #1a1a1a;
     border-radius: 10px;
@@ -185,56 +184,48 @@
     color: #111;
   }
 
-  /* Base Button Styling with Crisp White Double-Line Border */
+  /* Base Button Outer Bezels (Reverted style) */
   .btn {
     background-color: #0d0d0d;
+    background-clip: padding-box; 
     border: 2px solid #1a1a1a;
-    box-shadow: inset 0 0 0 2px #ffffff;
+    outline: 2px solid #f2f2f2;
+    outline-offset: -4px;
     border-radius: 10px;
-    color: #ffffff;
-    height: 52px;
+    color: #f2f2f2;
+    height: 48px;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.15);
     transition: transform 0.05s ease, background-color 0.05s ease;
     box-sizing: border-box;
   }
 
   /* Symbol Buttons (+ / - / Toggle) */
   .btn.symbol-btn {
-    width: 48px;
-    flex: 0 0 48px;
+    width: 46px;
+    flex: 0 0 46px;
+    font-size: 38px;
     font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
     line-height: 1; 
   }
 
-  /* Bigger '+' buttons */
-  .btn.plus-btn {
-    font-size: 34px;
-    font-weight: 300;
-  }
-
-  /* Centered '-' button */
-  .btn.minus-btn {
-    font-size: 38px;
-    font-weight: 300;
-    padding-bottom: 3px;
-  }
-
-  /* SEARCH & SEND Buttons - Matches the thin, condensed font of the second pic */
+  /* SEARCH & SEND Buttons (Reverted font and sizing) */
   .btn.text-btn {
-    width: 82px;
-    flex: 0 0 82px; 
-    font-size: 16px;
-    font-family: 'Arial Narrow', 'Trebuchet MS', sans-serif;
-    font-weight: normal; 
-    letter-spacing: -1px; 
-    transform: scaleX(0.65); 
+    width: 76px;
+    flex: 0 0 76px;
+    font-size: 13.5px;
+    font-family: 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: bold;
+    letter-spacing: -0.2px;
+    padding: 0;
   }
 
   .btn:active {
-    transform: translateY(1px) scale(0.98);
+    transform: translateY(1px);
     background-color: #1a1a1a;
   }
 
@@ -264,7 +255,7 @@
 
     <!-- 4-Digit 5x7 Dot Matrix Display Screen -->
     <div class="display-screen" id="matrix-display">
-      <!-- 4 x 5x7 modules generated dynamically via JS -->
+      <!-- Generated via JS -->
     </div>
 
     <div class="indicators">
@@ -303,7 +294,7 @@
     <button class="btn symbol-btn plus-btn">+</button>
     <button class="btn symbol-btn plus-btn">+</button>
     
-    <button class="btn symbol-btn minus-btn" id="btn-minus">&minus;</button>
+    <button class="btn symbol-btn" id="btn-minus">&minus;</button>
     
     <button class="btn text-btn" id="btn-send">SEND</button>
     
@@ -313,9 +304,9 @@
 </div>
 
 <script>
-  // 5x7 Dot-Matrix Bitmaps (Updated 0-9 matching image_11, image_12, and image_13)
+  // 5x7 Dot-Matrix Bitmaps extracted precisely from your reference images (0-9)
   const DIGITS_5x7 = {
-    0: [ // Features the diagonal slash seen in image_11 and image_13
+    0: [
       [0,1,1,1,0],
       [1,0,0,0,1],
       [1,0,0,1,1],
@@ -324,22 +315,22 @@
       [1,0,0,0,1],
       [0,1,1,1,0]
     ],
-    1: [ // Features top-left flag and bottom serif seen in image_11 and image_13
+    1: [
       [0,0,1,0,0],
       [0,1,1,0,0],
+      [1,0,1,0,0],
       [0,0,1,0,0],
       [0,0,1,0,0],
       [0,0,1,0,0],
-      [0,0,1,0,0],
-      [0,1,1,1,0]
+      [1,1,1,1,1]
     ],
     2: [
       [0,1,1,1,0],
       [1,0,0,0,1],
       [0,0,0,0,1],
-      [0,0,0,1,0],
-      [0,0,1,0,0],
+      [0,0,1,1,0],
       [0,1,0,0,0],
+      [1,0,0,0,0],
       [1,1,1,1,1]
     ],
     3: [
@@ -351,7 +342,7 @@
       [1,0,0,0,1],
       [0,1,1,1,0]
     ],
-    4: [ // From image_12
+    4: [
       [0,0,0,1,0],
       [0,0,1,1,0],
       [0,1,0,1,0],
@@ -360,7 +351,7 @@
       [0,0,0,1,0],
       [0,0,0,1,0]
     ],
-    5: [ // From image_12
+    5: [
       [1,1,1,1,1],
       [1,0,0,0,0],
       [1,1,1,1,0],
@@ -369,25 +360,25 @@
       [1,0,0,0,1],
       [0,1,1,1,0]
     ],
-    6: [ // From image_12
+    6: [
       [0,1,1,1,0],
-      [1,0,0,0,0],
+      [1,0,0,0,1],
       [1,0,0,0,0],
       [1,1,1,1,0],
       [1,0,0,0,1],
       [1,0,0,0,1],
       [0,1,1,1,0]
     ],
-    7: [ // From image_12 (Vertical drop at the bottom)
+    7: [
       [1,1,1,1,1],
       [0,0,0,0,1],
       [0,0,0,1,0],
       [0,0,1,0,0],
-      [0,1,0,0,0],
-      [0,1,0,0,0],
-      [0,1,0,0,0]
+      [0,0,1,0,0],
+      [0,0,1,0,0],
+      [0,0,1,0,0]
     ],
-    8: [ // From image_11
+    8: [
       [0,1,1,1,0],
       [1,0,0,0,1],
       [1,0,0,0,1],
@@ -396,22 +387,22 @@
       [1,0,0,0,1],
       [0,1,1,1,0]
     ],
-    9: [ // From image_11
+    9: [
       [0,1,1,1,0],
       [1,0,0,0,1],
       [1,0,0,0,1],
       [0,1,1,1,1],
       [0,0,0,0,1],
-      [0,0,0,0,1],
+      [1,0,0,0,1],
       [0,1,1,1,0]
     ]
   };
 
   const container = document.getElementById('matrix-display');
   const comLight = document.getElementById('com-light');
-  let currentVal = 8901; // Set default to one of the references
+  let currentVal = 0; // Initialized to 0000
 
-  // Build 4 physical 5x7 dot matrix modules with 35 dots each
+  // Build 4 physical 5x7 dot matrix modules (35 dots each)
   const matrixModules = [];
   for (let m = 0; m < 4; m++) {
     const modDiv = document.createElement('div');
@@ -429,7 +420,6 @@
     matrixModules.push(dots);
   }
 
-  // Render a 4-digit number onto the LED matrix screen
   function updateDisplay(val) {
     const str = String(val).padStart(4, '0');
     for (let i = 0; i < 4; i++) {
@@ -450,7 +440,6 @@
     }
   }
 
-  // Initialize display
   updateDisplay(currentVal);
 
   // Button Listeners
