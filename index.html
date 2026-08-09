@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EDS Controller - Final Button Layout & Search Codes</title>
+<title>EDS Controller - Four Plus Buttons & Rollover Logic</title>
 <style>
   body {
     background-color: #1e1e1e; 
@@ -286,8 +286,11 @@
       </svg>
     </button>
     
-    <!-- Single consolidated + button -->
-    <button class="btn symbol-btn" id="btn-plus">+</button>
+    <!-- Four individual plus buttons -->
+    <button class="btn symbol-btn" id="btn-p1000">+</button>
+    <button class="btn symbol-btn" id="btn-p100">+</button>
+    <button class="btn symbol-btn" id="btn-p10">+</button>
+    <button class="btn symbol-btn" id="btn-p1">+</button>
     
     <button class="btn symbol-btn" id="btn-minus">&minus;</button>
     
@@ -446,37 +449,55 @@
   document.getElementById('btn-toggle').addEventListener('click', () => {
     searchDirectionDesc = !searchDirectionDesc;
     if (!searchDirectionDesc) {
-      arrowLight.classList.remove('lit-red'); // Lowest to highest
+      arrowLight.classList.remove('lit-red');
     } else {
-      arrowLight.classList.add('lit-red'); // Highest to lowest
+      arrowLight.classList.add('lit-red');
     }
   });
 
-  // SEARCH Button Logic (cycles through 0, 1111, 2222, 9999 based on direction)
+  // SEARCH Button Logic
   document.getElementById('btn-search').addEventListener('click', () => {
     let sorted = [...availableValues].sort((a, b) => a - b);
     if (searchDirectionDesc) {
-      sorted.reverse(); // Highest to lowest
+      sorted.reverse();
     }
     
     let target = sorted.find(v => searchDirectionDesc ? v < currentVal : v > currentVal);
     if (target === undefined) {
-      target = sorted[0]; // Loop around
+      target = sorted[0];
     }
     currentVal = target;
     updateDisplay(currentVal);
   });
 
-  // Single + Button Logic (increments by 1)
-  document.getElementById('btn-plus').addEventListener('click', () => {
-    currentVal = Math.min(9999, currentVal + 1);
+  // Four Plus Buttons with modulo loop rollover (0 to 9999)
+  document.getElementById('btn-p1000').addEventListener('click', () => {
+    currentVal = (currentVal + 1000) % 10000;
+    lastIncrementStep = 1000;
+    updateDisplay(currentVal);
+  });
+
+  document.getElementById('btn-p100').addEventListener('click', () => {
+    currentVal = (currentVal + 100) % 10000;
+    lastIncrementStep = 100;
+    updateDisplay(currentVal);
+  });
+
+  document.getElementById('btn-p10').addEventListener('click', () => {
+    currentVal = (currentVal + 10) % 10000;
+    lastIncrementStep = 10;
+    updateDisplay(currentVal);
+  });
+
+  document.getElementById('btn-p1').addEventListener('click', () => {
+    currentVal = (currentVal + 1) % 10000;
     lastIncrementStep = 1;
     updateDisplay(currentVal);
   });
 
-  // Minus Button Logic (lowers value based on last increment step)
+  // Minus Button Logic with reverse loop rollover
   document.getElementById('btn-minus').addEventListener('click', () => {
-    currentVal = Math.max(0, currentVal - lastIncrementStep);
+    currentVal = (currentVal - lastIncrementStep + 10000) % 10000;
     updateDisplay(currentVal);
   });
 
