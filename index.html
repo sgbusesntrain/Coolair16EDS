@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EDS Controller - Exact Button Matches</title>
+<title>EDS Controller - Refined Icon Alignment & Borders</title>
 <style>
   body {
     background-color: #1e1e1e; 
@@ -18,7 +18,7 @@
   .eds-panel {
     background-color: #c9d2db;
     padding: 30px;
-    width: 600px; /* Slightly wider to accommodate the precise gaps */
+    width: 610px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.8);
     position: relative;
     box-sizing: border-box;
@@ -158,15 +158,16 @@
     color: #111;
   }
 
-  /* Base Button Styling */
+  /* Base Button Outer Bezels - Restored Visible Double Borders for ALL buttons */
   .btn {
     background-color: #0d0d0d;
-    background-clip: content-box; 
+    background-clip: padding-box; 
     border: 2px solid #1a1a1a;
-    padding: 2px;
+    outline: 2px solid #f2f2f2; /* Creates the outer high-contrast border ring visible in photo */
+    outline-offset: -4px;
     border-radius: 10px;
     color: #f2f2f2;
-    height: 48px; /* Uniform height */
+    height: 48px;
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -176,25 +177,25 @@
     box-sizing: border-box;
   }
 
-  /* Plus, Minus & Toggle Icon Buttons */
+  /* Symbol Buttons (+ / - / Toggle) */
   .btn.symbol-btn {
     width: 46px;
-    flex: 0 0 46px; /* Locks the width so it can't stretch */
-    font-size: 34px;
+    flex: 0 0 46px;
+    font-size: 38px; /* Bigger '+' and '-' symbols */
     font-family: Arial, Helvetica, sans-serif;
     font-weight: normal;
     line-height: 1; 
   }
 
-  /* SEARCH & SEND Buttons - Strict Length */
+  /* SEARCH & SEND Buttons - Identical Length with crisp border rings */
   .btn.text-btn {
     width: 76px;
-    flex: 0 0 76px; /* Forces both buttons to be identically long regardless of text width */
-    font-size: 14px;
+    flex: 0 0 76px;
+    font-size: 13.5px;
     font-family: 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif;
     font-weight: bold;
     letter-spacing: -0.2px;
-    padding: 2px 0; /* Override default side padding */
+    padding: 0;
   }
 
   .btn:active {
@@ -202,58 +203,10 @@
     background-color: #1a1a1a;
   }
 
-  /* Scaled custom CSS drawing for Up/Down Arrow with Slash icon */
-  .custom-icon-toggle {
-    position: relative;
-    width: 22px;
+  /* Perfect SVG Centered Toggle Icon (Arrows centered directly on diagonal slash) */
+  .toggle-svg {
+    width: 26px;
     height: 28px;
-  }
-  .custom-icon-toggle .arrow-up {
-    position: absolute;
-    left: 1px;
-    top: 3px;
-    width: 2px;
-    height: 18px;
-    background: #fff;
-  }
-  .custom-icon-toggle .arrow-up::before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: -3px;
-    border: solid #fff;
-    border-width: 0 2px 2px 0;
-    display: inline-block;
-    padding: 3.5px;
-    transform: rotate(-135deg);
-  }
-  .custom-icon-toggle .arrow-down {
-    position: absolute;
-    right: 1px;
-    bottom: 3px;
-    width: 2px;
-    height: 18px;
-    background: #fff;
-  }
-  .custom-icon-toggle .arrow-down::before {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    right: -3px;
-    border: solid #fff;
-    border-width: 0 2px 2px 0;
-    display: inline-block;
-    padding: 3.5px;
-    transform: rotate(45deg);
-  }
-  .custom-icon-toggle .slash {
-    position: absolute;
-    top: -2px;
-    left: 10px;
-    width: 2px;
-    height: 32px;
-    background: #fff;
-    transform: rotate(22deg);
   }
 
 </style>
@@ -299,19 +252,25 @@
     <div class="label-top"><strong>EDS</strong> Controller</div>
     
     <button class="btn text-btn" id="btn-search">SEARCH</button>
+    
     <button class="btn symbol-btn" id="btn-toggle">
-      <div class="custom-icon-toggle">
-        <div class="arrow-up"></div>
-        <div class="slash"></div>
-        <div class="arrow-down"></div>
-      </div>
+      <svg class="toggle-svg" viewBox="0 0 26 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Centered Slash -->
+        <line x1="18" y1="2" x2="8" y2="26" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
+        <!-- Left Up Arrow (Stem intersects center line) -->
+        <line x1="6" y1="22" x2="6" y2="7" stroke="#ffffff" stroke-width="2.2"/>
+        <polyline points="2,11 6,6 10,11" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Right Down Arrow (Stem intersects center line) -->
+        <line x1="20" y1="6" x2="20" y2="21" stroke="#ffffff" stroke-width="2.2"/>
+        <polyline points="16,17 20,22 24,17" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
     </button>
+    
     <button class="btn symbol-btn plus-btn">+</button>
     <button class="btn symbol-btn plus-btn">+</button>
     <button class="btn symbol-btn plus-btn">+</button>
     <button class="btn symbol-btn plus-btn">+</button>
     
-    <!-- Changed standard hyphen to true mathematical minus sign (&minus;) for perfect dead-center alignment -->
     <button class="btn symbol-btn" id="btn-minus">&minus;</button>
     
     <button class="btn text-btn" id="btn-send">SEND</button>
