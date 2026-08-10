@@ -18,26 +18,26 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
     overflow: hidden;
   }
 
   /* --- EDS DISPLAY CONTAINER --- */
   .eds-container {
     background-color: #1a1a1a;
-    padding: 12px;
+    padding: 10px;
     border: 3px solid #333;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
     width: 90%;
-    max-width: 780px;
+    max-width: 760px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.8);
   }
 
   .panel-section { width: 100%; }
-  .bottom-row { display: flex; gap: 8px; width: 100%; }
+  .bottom-row { display: flex; gap: 6px; width: 100%; }
 
   .led-screen {
     background: #090807;
@@ -86,11 +86,11 @@
   /* --- CONTROLLER PANEL --- */
   .controller-board {
     background-color: #d7dde4;
-    width: 780px;
-    height: 260px;
+    width: 760px;
+    height: 220px;
     border-radius: 6px;
     box-shadow: 0 12px 35px rgba(0,0,0,0.6), inset 0 0 12px rgba(255,255,255,0.6);
-    padding: 12px 18px;
+    padding: 10px 16px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -104,66 +104,66 @@
     padding: 0 4px;
   }
 
-  /* Port Connector */
-  .port-assembly { display: flex; align-items: center; }
+  /* Port Connector (Vertically Centered) */
+  .port-assembly { display: flex; align-items: center; margin-top: 2px; }
   .port-cap {
-    width: 14px; height: 26px;
+    width: 13px; height: 24px;
     background-color: #1a1a1a;
-    border-radius: 10px 0 0 10px;
+    border-radius: 8px 0 0 8px;
     margin-right: -2px;
     z-index: 1;
   }
   .port-body {
-    width: 50px; height: 36px;
+    width: 46px; height: 34px;
     background-color: #1a1a1a;
     border-radius: 5px;
     display: flex; align-items: center; justify-content: center;
     z-index: 2;
   }
   .port-slot {
-    width: 36px; height: 10px;
+    width: 32px; height: 9px;
     background-color: #000;
     border: 1px solid #111;
     border-radius: 2px;
     display: flex; justify-content: space-evenly; align-items: center;
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.9);
   }
-  .gold-pin { width: 4.5px; height: 2px; background-color: #d4af37; box-shadow: 0 0 2px #d4af37; }
+  .gold-pin { width: 4px; height: 2px; background-color: #d4af37; box-shadow: 0 0 2px #d4af37; }
 
-  /* Controller LED Screen (Larger & Prominent) */
+  /* Controller LED Screen */
   .led-screen-bezel {
     background-color: #080808;
     border: 2px solid #111;
     border-radius: 8px;
-    padding: 8px 22px;
+    padding: 6px 18px;
     display: flex;
-    gap: 16px;
+    gap: 14px;
     box-shadow: inset 0 0 14px rgba(0,0,0,0.95), 0 2px 4px rgba(255,255,255,0.3);
   }
   .digit {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(7, 1fr);
-    gap: 2.5px;
+    gap: 2px;
   }
   .ctrl-dot {
-    width: 9px; height: 9px;
+    width: 8px; height: 8px;
     border-radius: 50%;
     background-color: #250404;
   }
   .ctrl-dot.on {
     background-color: #ff3333;
-    box-shadow: 0 0 6px #ff3333, 0 0 10px #ff0000;
+    box-shadow: 0 0 5px #ff3333, 0 0 9px #ff0000;
   }
 
   /* Status Lights */
-  .status-lights { display: flex; gap: 14px; align-items: flex-end; }
+  .status-lights { display: flex; gap: 12px; align-items: flex-end; margin-top: 2px; }
   .indicator {
     display: flex; flex-direction: column; align-items: center; gap: 3px;
     font-size: 11px; font-weight: bold; color: #111;
   }
   .indicator-light {
-    width: 14px; height: 14px; border-radius: 50%;
+    width: 13px; height: 13px; border-radius: 50%;
     background-color: #1a1a1a;
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
   }
@@ -172,15 +172,15 @@
     box-shadow: 0 0 10px #ff4747, inset 0 0 4px #fff;
   }
 
-  /* Button Section (Tighter and Wider to match reference) */
+  /* Button Section */
   .button-group-wrapper {
     position: relative;
     border: 2px solid #1a1a1a;
-    border-radius: 10px;
-    padding: 12px 10px 10px 10px;
+    border-radius: 9px;
+    padding: 10px 8px 8px 8px;
     display: flex;
     justify-content: space-between;
-    gap: 6px;
+    gap: 5px;
     align-items: center;
   }
 
@@ -190,46 +190,59 @@
     color: #111;
     line-height: 1;
   }
-  .legend-top { top: -9px; left: 16px; padding: 0 6px; font-size: 18px; }
-  .legend-top strong { font-size: 20px; font-weight: 900; }
-  .legend-bottom { bottom: -8px; right: 16px; padding: 0 6px; font-size: 16px; font-weight: 900; font-style: italic; }
+  .legend-top { top: -8px; left: 14px; padding: 0 5px; font-size: 16px; }
+  .legend-top strong { font-size: 18px; font-weight: 900; }
+  .legend-bottom { bottom: -7px; right: 14px; padding: 0 5px; font-size: 15px; font-weight: 900; font-style: italic; }
 
   .btn {
     background-color: #0d0d0d;
     color: #fff;
     border: none;
-    border-radius: 7px;
-    height: 46px;
+    height: 40px;
     display: flex; justify-content: center; align-items: center;
     cursor: pointer;
     position: relative;
     box-shadow: 0 3px 5px rgba(0,0,0,0.4);
     transition: transform 0.1s;
   }
-  .btn::after {
-    content: '';
-    position: absolute;
-    top: 2.5px; left: 2.5px; right: 2.5px; bottom: 2.5px;
-    border: 1.5px solid #d2d8df;
-    border-radius: 5px;
-    pointer-events: none;
-  }
   .btn:active { transform: translateY(2px); box-shadow: 0 1px 3px rgba(0,0,0,0.5); }
   
+  /* Search & Send Buttons (Curved Rectangles) */
   .btn-text {
-    width: 95px;
+    width: 78px;
+    border-radius: 12px;
     flex-shrink: 0;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: bold;
     letter-spacing: 0.5px;
   }
+  .btn-text::after {
+    content: '';
+    position: absolute;
+    top: 2px; left: 2px; right: 2px; bottom: 2px;
+    border: 1.5px solid #d2d8df;
+    border-radius: 10px;
+    pointer-events: none;
+  }
+
+  /* Square-curved symbol buttons */
   .btn-symbol {
-    width: 72px;
+    width: 46px;
+    border-radius: 8px;
     flex-shrink: 0;
-    font-size: 24px;
+    font-size: 22px;
     font-weight: bold;
   }
-  .toggle-icon { width: 22px; height: 22px; }
+  .btn-symbol::after {
+    content: '';
+    position: absolute;
+    top: 2px; left: 2px; right: 2px; bottom: 2px;
+    border: 1.5px solid #d2d8df;
+    border-radius: 6px;
+    pointer-events: none;
+  }
+
+  .toggle-icon { width: 20px; height: 20px; }
 </style>
 </head>
 <body>
@@ -273,7 +286,7 @@
         </div>
         <div class="indicator">
           <div class="indicator-light" id="led-dir"></div>
-          <span style="font-size: 13px; margin-top:-2px;">⇅</span>
+          <span style="font-size: 12px; margin-top:-2px;">⇅</span>
         </div>
       </div>
     </div>
