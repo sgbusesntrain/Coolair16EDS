@@ -5,238 +5,234 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>EDS Controller</title>
 <style>
-  * {
-    box-sizing: border-box;
-  }
-
-  html, body {
-    width: 100%;
-    height: 100%;
+  * { box-sizing: border-box; }
+  
+  body {
     margin: 0;
-    padding: 0;
-    background-color: #121212;
-    font-family: Arial, sans-serif;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    background-color: #2b3035;
+    font-family: Arial, sans-serif;
   }
 
-  /* --- CONTROLLER PANEL --- */
-  .controller-panel {
-    background-color: #c9d2db;
-    padding: 35px 40px;
-    width: 95%;
-    max-width: 1000px;
-    border-radius: 12px;
-    box-shadow: 0 12px 35px rgba(0,0,0,0.85);
-    position: relative;
+  /* Main Controller Panel Background with precise proportions */
+  .controller-board {
+    background-color: #d7dde4;
+    width: 920px;
+    height: 360px;
+    border-radius: 6px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.6), inset 0 0 12px rgba(255,255,255,0.6);
+    padding: 25px 35px;
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    justify-content: space-between;
+    position: relative;
   }
 
-  /* Top Row Layout */
-  .ctrl-top-row {
+  /* --- TOP SECTION --- */
+  .top-section {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 10px;
+    padding: 0 5px;
   }
 
-  /* Data Port Graphic */
-  .port-wrapper {
+  /* Left Port Connector */
+  .port-assembly {
     display: flex;
     align-items: center;
   }
-  .port-nub {
+  .port-cap {
     width: 16px;
     height: 30px;
-    background: #1a1a1a;
-    border-top-left-radius: 14px;
-    border-bottom-left-radius: 14px;
+    background-color: #1a1a1a;
+    border-radius: 10px 0 0 10px;
     margin-right: -2px;
     z-index: 1;
   }
-  .port-main {
-    width: 72px;
-    height: 46px;
-    background: #1a1a1a;
-    border-radius: 6px;
+  .port-body {
+    width: 60px;
+    height: 44px;
+    background-color: #1a1a1a;
+    border-radius: 5px;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     z-index: 2;
   }
   .port-slot {
-    width: 50px;
-    height: 14px;
-    background: #000;
-    border: 1px solid #333;
+    width: 44px;
+    height: 12px;
+    background-color: #000;
+    border: 1px solid #111;
+    border-radius: 2px;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.9);
   }
   .gold-pin {
-    width: 8px;
-    height: 3px;
-    background: #c2883a;
+    width: 6px;
+    height: 2.5px;
+    background-color: #d4af37;
+    box-shadow: 0 0 2px #d4af37;
   }
 
-  /* Dot Matrix Display */
-  .ctrl-screen {
-    background: #080808;
-    border: 3px solid #1a1a1a;
-    border-radius: 10px;
-    padding: 12px 20px;
+  /* Center LED Screen with adjusted internal spacing */
+  .led-screen-bezel {
+    background-color: #080808;
+    border: 2px solid #111;
+    border-radius: 8px;
+    padding: 10px 22px;
     display: flex;
-    gap: 15px;
-    justify-content: center;
-    box-shadow: inset 0 4px 12px rgba(0,0,0,0.95);
+    gap: 16px;
+    box-shadow: inset 0 0 14px rgba(0,0,0,0.95), 0 2px 4px rgba(255,255,255,0.3);
   }
-
-  .matrix-digit {
+  .digit {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(7, 1fr);
-    gap: 3px;
-    background: #120303;
-    padding: 6px;
-    border-radius: 4px;
-    border: 1px solid #220808;
+    gap: 2.5px;
   }
-
-  .ctrl-dot {
-    width: 9px;
-    height: 9px;
+  .dot {
+    width: 8.5px;
+    height: 8.5px;
     border-radius: 50%;
-    background-color: #310808;
+    background-color: #250404;
   }
-
-  .ctrl-dot.on {
+  .dot.on {
     background-color: #ff3333;
-    box-shadow: 0 0 5px #ff3333, 0 0 10px #ff1a1a;
+    box-shadow: 0 0 5px #ff3333, 0 0 9px #ff0000;
   }
 
-  /* LED Indicators */
-  .ctrl-indicators {
+  /* Right Status Lights with compact spacing */
+  .status-lights {
     display: flex;
     gap: 20px;
-    align-items: center;
+    align-items: flex-end;
   }
-
-  .led-col {
+  .indicator {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 6px;
-    font-size: 15px;
+    font-size: 13px;
     font-weight: bold;
     color: #111;
   }
-
-  .light {
-    width: 20px;
-    height: 20px;
+  .indicator-light {
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
-    background: #111;
+    background-color: #1a1a1a;
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
   }
-
-  .light.lit-red {
-    background: #ff4747;
-    box-shadow: 0 0 12px #ff4747, inset 0 0 4px #fff;
+  .indicator-light.red-on {
+    background-color: #ff4747;
+    box-shadow: 0 0 10px #ff4747, inset 0 0 4px #fff;
   }
 
-  /* Button Section Outer Border with Labels */
-  .ctrl-button-section {
-    border: 3px solid #1a1a1a;
-    border-radius: 16px;
-    padding: 25px 18px;
+  /* --- BOTTOM BUTTON SECTION --- */
+  .button-group-wrapper {
+    position: relative;
+    border: 2px solid #1a1a1a;
+    border-radius: 12px;
+    padding: 22px 14px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    position: relative;
     gap: 10px;
+    align-items: center;
   }
 
-  .label-top {
+  /* Border Text Overrides */
+  .legend-top, .legend-bottom {
     position: absolute;
-    top: -18px;
-    left: 25px;
-    background: #c9d2db;
-    padding: 0 10px;
-    font-size: 26px;
+    background-color: #d7dde4;
     color: #111;
     line-height: 1;
   }
-  .label-top strong {
-    font-size: 28px;
+  .legend-top {
+    top: -11px;
+    left: 22px;
+    padding: 0 8px;
+    font-size: 22px;
+  }
+  .legend-top strong {
+    font-size: 24px;
     font-weight: 900;
   }
-
-  .label-bottom {
-    position: absolute;
-    bottom: -15px;
-    right: 25px;
-    background: #c9d2db;
-    padding: 0 10px;
-    font-size: 22px;
+  .legend-bottom {
+    bottom: -10px;
+    right: 22px;
+    padding: 0 8px;
+    font-size: 20px;
     font-weight: 900;
     font-style: italic;
-    color: #111;
-    line-height: 1;
   }
 
-  /* Buttons */
-  .ctrl-btn {
+  /* Buttons with balanced widths and spacing */
+  .btn {
     background-color: #0d0d0d;
-    border: 2px solid #1a1a1a;
-    outline: 2px solid #f2f2f2;
-    outline-offset: -5px;
-    border-radius: 14px;
-    color: #f2f2f2;
-    height: 70px;
-    cursor: pointer;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    height: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-sizing: border-box;
+    cursor: pointer;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+    transition: transform 0.1s;
+  }
+  
+  .btn::after {
+    content: '';
+    position: absolute;
+    top: 3px; left: 3px; right: 3px; bottom: 3px;
+    border: 2px solid #d2d8df;
+    border-radius: 5px;
+    pointer-events: none;
+  }
+
+  .btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  }
+
+  .btn-text {
+    flex: 1.4;
+    font-size: 17px;
     font-weight: bold;
-    transition: transform 0.05s, background-color 0.05s;
-  }
-
-  .ctrl-btn.symbol-btn {
-    flex: 1;
-    font-size: 38px;
-  }
-
-  .ctrl-btn.text-btn {
-    flex: 1.5;
-    font-size: 20px;
     letter-spacing: 0.5px;
   }
 
-  .ctrl-btn:active {
-    transform: translateY(2px);
-    background-color: #222;
+  .btn-symbol {
+    flex: 1;
+    font-size: 30px;
+    font-weight: bold;
   }
 
-  .toggle-svg {
-    width: 34px;
-    height: 38px;
+  .toggle-icon {
+    width: 28px;
+    height: 28px;
   }
+
 </style>
 </head>
 <body>
 
-<div class="controller-panel">
-  <div class="ctrl-top-row">
+<div class="controller-board">
+
+  <!-- Top Display & Port Row -->
+  <div class="top-section">
     
-    <!-- Left Port Connector -->
-    <div class="port-wrapper">
-      <div class="port-nub"></div>
-      <div class="port-main">
+    <!-- Connection Port -->
+    <div class="port-assembly">
+      <div class="port-cap"></div>
+      <div class="port-body">
         <div class="port-slot">
           <div class="gold-pin"></div>
           <div class="gold-pin"></div>
@@ -246,47 +242,54 @@
       </div>
     </div>
 
-    <!-- Center Display Matrix -->
-    <div class="ctrl-screen" id="ctrl-matrix-display"></div>
+    <!-- LED Dot Matrix -->
+    <div class="led-screen-bezel" id="matrix-display"></div>
 
-    <!-- Right Indicator LEDs -->
-    <div class="ctrl-indicators">
-      <div class="led-col"><div class="light lit-red"></div>Power</div>
-      <div class="led-col"><div class="light" id="com-light"></div>Con</div>
-      <div class="led-col"><div class="light" id="arrow-light"></div><span style="font-size:18px; margin-top:-3px;">⇅</span></div>
+    <!-- Indicator Lights -->
+    <div class="status-lights">
+      <div class="indicator">
+        <div class="indicator-light red-on"></div>
+        <span>Power</span>
+      </div>
+      <div class="indicator">
+        <div class="indicator-light" id="led-con"></div>
+        <span>Con</span>
+      </div>
+      <div class="indicator">
+        <div class="indicator-light" id="led-dir"></div>
+        <span style="font-size: 16px; margin-top:-2px;">⇅</span>
+      </div>
     </div>
   </div>
 
-  <!-- Lower Button Deck -->
-  <div class="ctrl-button-section">
-    <div class="label-top"><strong>EDS</strong> Controller</div>
+  <!-- Bottom Button Group -->
+  <div class="button-group-wrapper">
+    <div class="legend-top"><strong>EDS</strong> Controller</div>
     
-    <button class="ctrl-btn text-btn" id="btn-search">SEARCH</button>
-    
-    <button class="ctrl-btn symbol-btn" id="btn-toggle">
-      <svg class="toggle-svg" viewBox="0 0 26 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <line x1="18" y1="2" x2="8" y2="26" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
-        <line x1="6" y1="22" x2="6" y2="7" stroke="#ffffff" stroke-width="2.2"/>
-        <polyline points="2,11 6,6 10,11" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-        <line x1="20" y1="6" x2="20" y2="21" stroke="#ffffff" stroke-width="2.2"/>
-        <polyline points="16,17 20,22 24,17" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <button class="btn btn-text" id="btn-search">SEARCH</button>
+    <button class="btn btn-symbol" id="btn-toggle">
+      <svg class="toggle-icon" viewBox="0 0 30 30" stroke="white" stroke-width="2" fill="none">
+        <line x1="8" y1="22" x2="8" y2="8" stroke-linecap="round"/>
+        <polyline points="4,12 8,8 12,12" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="12" y1="26" x2="18" y2="4" stroke-linecap="round"/>
+        <line x1="22" y1="8" x2="22" y2="22" stroke-linecap="round"/>
+        <polyline points="18,18 22,22 26,18" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </button>
-    
-    <button class="ctrl-btn symbol-btn" id="btn-p1000">+</button>
-    <button class="ctrl-btn symbol-btn" id="btn-p100">+</button>
-    <button class="ctrl-btn symbol-btn" id="btn-p10">+</button>
-    <button class="ctrl-btn symbol-btn" id="btn-p1">+</button>
-    <button class="ctrl-btn symbol-btn" id="btn-minus">&minus;</button>
-    <button class="ctrl-btn text-btn" id="btn-send">SEND</button>
+    <button class="btn btn-symbol" id="btn-p1000">+</button>
+    <button class="btn btn-symbol" id="btn-p100">+</button>
+    <button class="btn btn-symbol" id="btn-p10">+</button>
+    <button class="btn btn-symbol" id="btn-p1">+</button>
+    <button class="btn btn-symbol" id="btn-minus">&minus;</button>
+    <button class="btn btn-text" id="btn-send">SEND</button>
 
-    <div class="label-bottom">COOL-AIR</div>
+    <div class="legend-bottom">COOL-AIR</div>
   </div>
+
 </div>
 
 <script>
-  // Controller 5x7 Bitmaps
-  const DIGITS_5x7 = {
+  const FONT_5x7 = {
     0: [[0,1,1,1,0],[1,0,0,0,1],[1,0,0,1,1],[1,0,1,0,1],[1,1,0,0,1],[1,0,0,0,1],[0,1,1,1,0]],
     1: [[0,0,1,0,0],[0,1,1,0,0],[1,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[1,1,1,1,1]],
     2: [[0,1,1,1,0],[1,0,0,0,1],[0,0,0,0,1],[0,0,1,1,0],[0,1,0,0,0],[1,0,0,0,0],[1,1,1,1,1]],
@@ -299,53 +302,44 @@
     9: [[0,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[0,1,1,1,1],[0,0,0,0,1],[1,0,0,0,1],[0,1,1,1,0]]
   };
 
-  // Build Controller Digits
-  const ctrlDisplay = document.getElementById('ctrl-matrix-display');
-  const ctrlModules = [];
-  for (let m = 0; m < 4; m++) {
-    const mod = document.createElement('div');
-    mod.className = 'matrix-digit';
+  const displayContainer = document.getElementById('matrix-display');
+  const digits = [];
+  for (let i = 0; i < 4; i++) {
+    const digitDiv = document.createElement('div');
+    digitDiv.className = 'digit';
     const dots = [];
-    for (let i = 0; i < 35; i++) {
-      const d = document.createElement('div');
-      d.className = 'ctrl-dot';
-      mod.appendChild(d);
-      dots.push(d);
+    for (let j = 0; j < 35; j++) {
+      const dot = document.createElement('div');
+      dot.className = 'dot';
+      digitDiv.appendChild(dot);
+      dots.push(dot);
     }
-    ctrlDisplay.appendChild(mod);
-    ctrlModules.push(dots);
+    displayContainer.appendChild(digitDiv);
+    digits.push(dots);
   }
 
-  // Update Controller Display
-  function updateCtrlDisplay(val) {
+  let currentCode = 1234;
+  let lastInc = 1;
+  let isDesc = false;
+
+  function renderScreen(val) {
     const str = String(val).padStart(4, '0');
     for (let i = 0; i < 4; i++) {
-      const num = parseInt(str[i], 10);
-      const bitmap = DIGITS_5x7[num];
-      const dots = ctrlModules[i];
-      let idx = 0;
+      const charCode = parseInt(str[i], 10);
+      const bitmap = FONT_5x7[charCode];
+      const dots = digits[i];
+      let pointer = 0;
       for (let r = 0; r < 7; r++) {
         for (let c = 0; c < 5; c++) {
-          if (bitmap[r][c] === 1) dots[idx].classList.add('on');
-          else dots[idx].classList.remove('on');
-          idx++;
+          if (bitmap[r][c] === 1) dots[pointer].classList.add('on');
+          else dots[pointer].classList.remove('on');
+          pointer++;
         }
       }
     }
   }
 
-  // Logic Variables
-  let currentVal = 1234;
-  let searchDirectionDesc = false;
-  let lastIncrementStep = 1;
-  let searchInterval = null;
-  const availableValues = [0, 1111, 2222, 9999];
-
-  function stopAutoSearch() {
-    if (searchInterval) { clearInterval(searchInterval); searchInterval = null; }
-  }
-
-  function addIndep(val, step) {
+  function addStep(val, step) {
     let s = String(val).padStart(4, '0').split('').map(Number);
     if (step === 1000) s[0] = (s[0] + 1) % 10;
     if (step === 100)  s[1] = (s[1] + 1) % 10;
@@ -354,7 +348,7 @@
     return parseInt(s.join(''), 10);
   }
 
-  function subIndep(val, step) {
+  function subStep(val, step) {
     let s = String(val).padStart(4, '0').split('').map(Number);
     if (step === 1000) s[0] = (s[0] - 1 + 10) % 10;
     if (step === 100)  s[1] = (s[1] - 1 + 10) % 10;
@@ -363,42 +357,32 @@
     return parseInt(s.join(''), 10);
   }
 
-  // Event Listeners
-  document.getElementById('btn-toggle').addEventListener('click', () => {
-    stopAutoSearch();
-    searchDirectionDesc = !searchDirectionDesc;
-    document.getElementById('arrow-light').classList.toggle('lit-red', searchDirectionDesc);
-  });
+  const channel = new BroadcastChannel('eds_channel');
 
-  document.getElementById('btn-search').addEventListener('click', () => {
-    stopAutoSearch();
-    let sorted = [...availableValues].sort((a,b) => searchDirectionDesc ? b - a : a - b);
-    let idx = (sorted.indexOf(currentVal) + 1) % sorted.length;
-    currentVal = sorted[idx];
-    updateCtrlDisplay(currentVal);
+  document.getElementById('btn-p1000').onclick = () => { lastInc = 1000; currentCode = addStep(currentCode, 1000); renderScreen(currentCode); };
+  document.getElementById('btn-p100').onclick = () => { lastInc = 100; currentCode = addStep(currentCode, 100); renderScreen(currentCode); };
+  document.getElementById('btn-p10').onclick = () => { lastInc = 10; currentCode = addStep(currentCode, 10); renderScreen(currentCode); };
+  document.getElementById('btn-p1').onclick = () => { lastInc = 1; currentCode = addStep(currentCode, 1); renderScreen(currentCode); };
+  document.getElementById('btn-minus').onclick = () => { currentCode = subStep(currentCode, lastInc); renderScreen(currentCode); };
+  
+  document.getElementById('btn-toggle').onclick = () => {
+    isDesc = !isDesc;
+    document.getElementById('led-dir').classList.toggle('red-on', isDesc);
+  };
 
-    searchInterval = setInterval(() => {
-      let activeSorted = [...availableValues].sort((a,b) => searchDirectionDesc ? b - a : a - b);
-      let i = (activeSorted.indexOf(currentVal) + 1) % activeSorted.length;
-      currentVal = activeSorted[i];
-      updateCtrlDisplay(currentVal);
-    }, 2000);
-  });
+  document.getElementById('btn-search').onclick = () => {
+    currentCode = 9999;
+    renderScreen(currentCode);
+  };
 
-  document.getElementById('btn-p1000').addEventListener('click', () => { stopAutoSearch(); lastIncrementStep = 1000; currentVal = addIndep(currentVal, 1000); updateCtrlDisplay(currentVal); });
-  document.getElementById('btn-p100').addEventListener('click', () => { stopAutoSearch(); lastIncrementStep = 100; currentVal = addIndep(currentVal, 100); updateCtrlDisplay(currentVal); });
-  document.getElementById('btn-p10').addEventListener('click', () => { stopAutoSearch(); lastIncrementStep = 10; currentVal = addIndep(currentVal, 10); updateCtrlDisplay(currentVal); });
-  document.getElementById('btn-p1').addEventListener('click', () => { stopAutoSearch(); lastIncrementStep = 1; currentVal = addIndep(currentVal, 1); updateCtrlDisplay(currentVal); });
-  document.getElementById('btn-minus').addEventListener('click', () => { stopAutoSearch(); currentVal = subIndep(currentVal, lastIncrementStep); updateCtrlDisplay(currentVal); });
+  document.getElementById('btn-send').onclick = () => {
+    const led = document.getElementById('led-con');
+    led.classList.add('red-on');
+    setTimeout(() => led.classList.remove('red-on'), 400);
+    channel.postMessage({ code: currentCode });
+  };
 
-  document.getElementById('btn-send').addEventListener('click', () => {
-    stopAutoSearch();
-    const com = document.getElementById('com-light');
-    com.classList.add('lit-red');
-    setTimeout(() => com.classList.remove('lit-red'), 400);
-  });
-
-  updateCtrlDisplay(currentVal);
+  renderScreen(currentCode);
 </script>
 
 </body>
