@@ -3,11 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>EDS Display System</title>
+<title>SMRT EDS & Controller System</title>
 <style>
-  * {
-    box-sizing: border-box;
-  }
+  * { box-sizing: border-box; }
 
   html, body {
     width: 100%;
@@ -17,36 +15,30 @@
     background-color: #121212;
     font-family: Arial, sans-serif;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 20px;
     overflow: hidden;
   }
 
   /* --- EDS DISPLAY CONTAINER --- */
   .eds-container {
     background-color: #1a1a1a;
-    padding: 16px;
+    padding: 14px;
     border: 3px solid #333;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
     width: 90%;
-    max-width: 850px; /* Adjusted size so EDS isn't too large */
+    max-width: 920px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.8);
   }
 
-  .panel-section {
-    width: 100%;
-  }
+  .panel-section { width: 100%; }
+  .bottom-row { display: flex; gap: 10px; width: 100%; }
 
-  .bottom-row {
-    display: flex;
-    gap: 12px;
-    width: 100%;
-  }
-
-  /* --- LED SCREEN MATRIX --- */
   .led-screen {
     background: #090807;
     border: 2px solid #22180c;
@@ -71,7 +63,6 @@
     box-shadow: 0 0 3px #ff9900;
   }
 
-  /* Aspect ratios for matrices */
   .front-panel {
     grid-template-columns: repeat(160, 1fr);
     grid-template-rows: repeat(16, 1fr);
@@ -91,39 +82,229 @@
     grid-template-rows: repeat(16, 1fr);
     aspect-ratio: 40 / 16;
   }
+
+  /* --- CONTROLLER PANEL --- */
+  .controller-board {
+    background-color: #d7dde4;
+    width: 920px;
+    height: 340px;
+    border-radius: 6px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.6), inset 0 0 12px rgba(255,255,255,0.6);
+    padding: 22px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+  }
+
+  .top-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5px;
+  }
+
+  /* Port Connector */
+  .port-assembly { display: flex; align-items: center; }
+  .port-cap {
+    width: 16px; height: 30px;
+    background-color: #1a1a1a;
+    border-radius: 10px 0 0 10px;
+    margin-right: -2px;
+    z-index: 1;
+  }
+  .port-body {
+    width: 60px; height: 44px;
+    background-color: #1a1a1a;
+    border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 2;
+  }
+  .port-slot {
+    width: 44px; height: 12px;
+    background-color: #000;
+    border: 1px solid #111;
+    border-radius: 2px;
+    display: flex; justify-content: space-evenly; align-items: center;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.9);
+  }
+  .gold-pin { width: 6px; height: 2.5px; background-color: #d4af37; box-shadow: 0 0 2px #d4af37; }
+
+  /* Controller LED Screen */
+  .led-screen-bezel {
+    background-color: #080808;
+    border: 2px solid #111;
+    border-radius: 8px;
+    padding: 8px 18px;
+    display: flex;
+    gap: 14px;
+    box-shadow: inset 0 0 14px rgba(0,0,0,0.95), 0 2px 4px rgba(255,255,255,0.3);
+  }
+  .digit {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(7, 1fr);
+    gap: 2.5px;
+  }
+  .ctrl-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background-color: #250404;
+  }
+  .ctrl-dot.on {
+    background-color: #ff3333;
+    box-shadow: 0 0 5px #ff3333, 0 0 9px #ff0000;
+  }
+
+  /* Status Lights */
+  .status-lights { display: flex; gap: 18px; align-items: flex-end; }
+  .indicator {
+    display: flex; flex-direction: column; align-items: center; gap: 5px;
+    font-size: 13px; font-weight: bold; color: #111;
+  }
+  .indicator-light {
+    width: 16px; height: 16px; border-radius: 50%;
+    background-color: #1a1a1a;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
+  }
+  .indicator-light.red-on {
+    background-color: #ff4747;
+    box-shadow: 0 0 10px #ff4747, inset 0 0 4px #fff;
+  }
+
+  /* Button Section */
+  .button-group-wrapper {
+    position: relative;
+    border: 2px solid #1a1a1a;
+    border-radius: 12px;
+    padding: 20px 14px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .legend-top, .legend-bottom {
+    position: absolute;
+    background-color: #d7dde4;
+    color: #111;
+    line-height: 1;
+  }
+  .legend-top { top: -11px; left: 22px; padding: 0 8px; font-size: 22px; }
+  .legend-top strong { font-size: 24px; font-weight: 900; }
+  .legend-bottom { bottom: -10px; right: 22px; padding: 0 8px; font-size: 20px; font-weight: 900; font-style: italic; }
+
+  .btn {
+    background-color: #0d0d0d;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    height: 56px;
+    display: flex; justify-content: center; align-items: center;
+    cursor: pointer;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+    transition: transform 0.1s;
+  }
+  .btn::after {
+    content: '';
+    position: absolute;
+    top: 3px; left: 3px; right: 3px; bottom: 3px;
+    border: 2px solid #d2d8df;
+    border-radius: 5px;
+    pointer-events: none;
+  }
+  .btn:active { transform: translateY(2px); box-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+  .btn-text { flex: 1.4; font-size: 16px; font-weight: bold; letter-spacing: 0.5px; }
+  .btn-symbol { flex: 1; font-size: 28px; font-weight: bold; }
+  .toggle-icon { width: 26px; height: 26px; }
 </style>
 </head>
 <body>
 
-<div class="eds-container">
-  <!-- Top Front Display -->
-  <div class="panel-section">
-    <div class="led-screen front-panel" id="front-grid"></div>
+  <!-- EDS DISPLAY SECTION -->
+  <div class="eds-container">
+    <div class="panel-section">
+      <div class="led-screen front-panel" id="front-grid"></div>
+    </div>
+    <div class="bottom-row">
+      <div class="led-screen side-panel" id="side-grid"></div>
+      <div class="led-screen rear-panel" id="rear-grid"></div>
+    </div>
   </div>
-  
-  <!-- Bottom Side & Rear Displays -->
-  <div class="bottom-row">
-    <div class="led-screen side-panel" id="side-grid"></div>
-    <div class="led-screen rear-panel" id="rear-grid"></div>
+
+  <!-- CONTROLLER SECTION -->
+  <div class="controller-board">
+    <div class="top-section">
+      <div class="port-assembly">
+        <div class="port-cap"></div>
+        <div class="port-body">
+          <div class="port-slot">
+            <div class="gold-pin"></div>
+            <div class="gold-pin"></div>
+            <div class="gold-pin"></div>
+            <div class="gold-pin"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="led-screen-bezel" id="matrix-display"></div>
+
+      <div class="status-lights">
+        <div class="indicator">
+          <div class="indicator-light red-on"></div>
+          <span>Power</span>
+        </div>
+        <div class="indicator">
+          <div class="indicator-light" id="led-con"></div>
+          <span>Con</span>
+        </div>
+        <div class="indicator">
+          <div class="indicator-light" id="led-dir"></div>
+          <span style="font-size: 16px; margin-top:-2px;">⇅</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="button-group-wrapper">
+      <div class="legend-top"><strong>EDS</strong> Controller</div>
+      
+      <button class="btn btn-text" id="btn-search">SEARCH</button>
+      <button class="btn btn-symbol" id="btn-toggle">
+        <svg class="toggle-icon" viewBox="0 0 30 30" stroke="white" stroke-width="2" fill="none">
+          <line x1="8" y1="22" x2="8" y2="8" stroke-linecap="round"/>
+          <polyline points="4,12 8,8 12,12" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="12" y1="26" x2="18" y2="4" stroke-linecap="round"/>
+          <line x1="22" y1="8" x2="22" y2="22" stroke-linecap="round"/>
+          <polyline points="18,18 22,22 26,18" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button class="btn btn-symbol" id="btn-p1000">+</button>
+      <button class="btn btn-symbol" id="btn-p100">+</button>
+      <button class="btn btn-symbol" id="btn-p10">+</button>
+      <button class="btn btn-symbol" id="btn-p1">+</button>
+      <button class="btn btn-symbol" id="btn-minus">&minus;</button>
+      <button class="btn btn-text" id="btn-send">SEND</button>
+
+      <div class="legend-bottom">COOL-AIR</div>
+    </div>
   </div>
-</div>
 
 <script>
-  // Standard 5x7 Bitmaps for EDS Rendering
-  const DIGITS_5x7 = {
-    '0': [[0,1,1,1,0],[1,0,0,0,1],[1,0,0,1,1],[1,0,1,0,1],[1,1,0,0,1],[1,0,0,0,1],[0,1,1,1,0]],
-    '1': [[0,0,1,0,0],[0,1,1,0,0],[1,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[1,1,1,1,1]],
-    '2': [[0,1,1,1,0],[1,0,0,0,1],[0,0,0,0,1],[0,0,1,1,0],[0,1,0,0,0],[1,0,0,0,0],[1,1,1,1,1]],
-    '3': [[0,1,1,1,0],[1,0,0,0,1],[0,0,0,0,1],[0,0,1,1,0],[0,0,0,0,1],[1,0,0,0,1],[0,1,1,1,0]],
-    '4': [[0,0,0,1,0],[0,0,1,1,0],[0,1,0,1,0],[1,0,0,1,0],[1,1,1,1,1],[0,0,0,1,0],[0,0,0,1,0]],
-    '5': [[1,1,1,1,1],[1,0,0,0,0],[1,1,1,1,0],[0,0,0,0,1],[0,0,0,0,1],[1,0,0,0,1],[0,1,1,1,0]],
-    '6': [[0,1,1,1,0],[1,0,0,0,1],[1,0,0,0,0],[1,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[0,1,1,1,0]],
-    '7': [[1,1,1,1,1],[0,0,0,0,1],[0,0,0,1,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0]],
-    '8': [[0,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[0,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[0,1,1,1,0]],
-    '9': [[0,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[0,1,1,1,1],[0,0,0,0,1],[1,0,0,0,1],[0,1,1,1,0]]
+  const FONT_5x7 = {
+    0: [[0,1,1,1,0],[1,0,0,0,1],[1,0,0,1,1],[1,0,1,0,1],[1,1,0,0,1],[1,0,0,0,1],[0,1,1,1,0]],
+    1: [[0,0,1,0,0],[0,1,1,0,0],[1,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[1,1,1,1,1]],
+    2: [[0,1,1,1,0],[1,0,0,0,1],[0,0,0,0,1],[0,0,1,1,0],[0,1,0,0,0],[1,0,0,0,0],[1,1,1,1,1]],
+    3: [[0,1,1,1,0],[1,0,0,0,1],[0,0,0,0,1],[0,0,1,1,0],[0,0,0,0,1],[1,0,0,0,1],[0,1,1,1,0]],
+    4: [[0,0,0,1,0],[0,0,1,1,0],[0,1,0,1,0],[1,0,0,1,0],[1,1,1,1,1],[0,0,0,1,0],[0,0,0,1,0]],
+    5: [[1,1,1,1,1],[1,0,0,0,0],[1,1,1,1,0],[0,0,0,0,1],[0,0,0,0,1],[1,0,0,0,1],[0,1,1,1,0]],
+    6: [[0,1,1,1,0],[1,0,0,0,1],[1,0,0,0,0],[1,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[0,1,1,1,0]],
+    7: [[1,1,1,1,1],[0,0,0,0,1],[0,0,0,1,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0]],
+    8: [[0,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[0,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[0,1,1,1,0]],
+    9: [[0,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[0,1,1,1,1],[0,0,0,0,1],[1,0,0,0,1],[0,1,1,1,0]]
   };
 
-  // Build LED Grids
+  // Build EDS Grids
   function buildGrid(id, cols, rows) {
     const el = document.getElementById(id);
     const grid = [];
@@ -143,26 +324,39 @@
   const sideGrid = buildGrid('side-grid', 96, 16);
   const rearGrid = buildGrid('rear-grid', 40, 16);
 
-  function clearGrid(g, cols, rows) {
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
-        g[r][c].classList.remove('on');
-      }
+  // Build Controller Digits
+  const displayContainer = document.getElementById('matrix-display');
+  const digits = [];
+  for (let i = 0; i < 4; i++) {
+    const digitDiv = document.createElement('div');
+    digitDiv.className = 'digit';
+    const dots = [];
+    for (let j = 0; j < 35; j++) {
+      const dot = document.createElement('div');
+      dot.className = 'ctrl-dot';
+      digitDiv.appendChild(dot);
+      dots.push(dot);
     }
+    displayContainer.appendChild(digitDiv);
+    digits.push(dots);
+  }
+
+  let currentCode = 1234;
+  let lastInc = 1;
+  let isDesc = false;
+
+  function clearGrid(g, cols, rows) {
+    for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) g[r][c].classList.remove('on');
   }
 
   function fillGrid(g, cols, rows) {
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
-        g[r][c].classList.add('on');
-      }
-    }
+    for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) g[r][c].classList.add('on');
   }
 
   function renderEdsText(g, text, startCol, startRow) {
     let cursor = startCol;
     for (let char of text) {
-      const bitmap = DIGITS_5x7[char];
+      const bitmap = FONT_5x7[char];
       if (bitmap) {
         for (let r = 0; r < 7; r++) {
           for (let c = 0; c < 5; c++) {
@@ -176,7 +370,6 @@
     }
   }
 
-  // Function to render route onto the displays
   function updateEDS(val) {
     clearGrid(frontGrid, 160, 16);
     clearGrid(sideGrid, 96, 16);
@@ -194,16 +387,66 @@
     }
   }
 
-  // Listens for updates if you pass data via BroadcastChannel or postMessage from controller.html
-  const channel = new BroadcastChannel('eds_channel');
-  channel.onmessage = (event) => {
-    if (event.data && event.data.code !== undefined) {
-      updateEDS(event.data.code);
+  function renderScreen(val) {
+    const str = String(val).padStart(4, '0');
+    for (let i = 0; i < 4; i++) {
+      const charCode = parseInt(str[i], 10);
+      const bitmap = FONT_5x7[charCode];
+      const dots = digits[i];
+      let pointer = 0;
+      for (let r = 0; r < 7; r++) {
+        for (let c = 0; c < 5; c++) {
+          if (bitmap[r][c] === 1) dots[pointer].classList.add('on');
+          else dots[pointer].classList.remove('on');
+          pointer++;
+        }
+      }
     }
+  }
+
+  function addStep(val, step) {
+    let s = String(val).padStart(4, '0').split('').map(Number);
+    if (step === 1000) s[0] = (s[0] + 1) % 10;
+    if (step === 100)  s[1] = (s[1] + 1) % 10;
+    if (step === 10)   s[2] = (s[2] + 1) % 10;
+    if (step === 1)    s[3] = (s[3] + 1) % 10;
+    return parseInt(s.join(''), 10);
+  }
+
+  function subStep(val, step) {
+    let s = String(val).padStart(4, '0').split('').map(Number);
+    if (step === 1000) s[0] = (s[0] - 1 + 10) % 10;
+    if (step === 100)  s[1] = (s[1] - 1 + 10) % 10;
+    if (step === 10)   s[2] = (s[2] - 1 + 10) % 10;
+    if (step === 1)    s[3] = (s[3] - 1 + 10) % 10;
+    return parseInt(s.join(''), 10);
+  }
+
+  document.getElementById('btn-p1000').onclick = () => { lastInc = 1000; currentCode = addStep(currentCode, 1000); renderScreen(currentCode); };
+  document.getElementById('btn-p100').onclick = () => { lastInc = 100; currentCode = addStep(currentCode, 100); renderScreen(currentCode); };
+  document.getElementById('btn-p10').onclick = () => { lastInc = 10; currentCode = addStep(currentCode, 10); renderScreen(currentCode); };
+  document.getElementById('btn-p1').onclick = () => { lastInc = 1; currentCode = addStep(currentCode, 1); renderScreen(currentCode); };
+  document.getElementById('btn-minus').onclick = () => { currentCode = subStep(currentCode, lastInc); renderScreen(currentCode); };
+  
+  document.getElementById('btn-toggle').onclick = () => {
+    isDesc = !isDesc;
+    document.getElementById('led-dir').classList.toggle('red-on', isDesc);
   };
 
-  // Initial render (Default code: 1234)
-  updateEDS(1234);
+  document.getElementById('btn-search').onclick = () => {
+    currentCode = 9999;
+    renderScreen(currentCode);
+  };
+
+  document.getElementById('btn-send').onclick = () => {
+    const led = document.getElementById('led-con');
+    led.classList.add('red-on');
+    setTimeout(() => led.classList.remove('red-on'), 400);
+    updateEDS(currentCode);
+  };
+
+  renderScreen(currentCode);
+  updateEDS(currentCode);
 </script>
 
 </body>
