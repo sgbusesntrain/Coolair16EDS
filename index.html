@@ -27,21 +27,21 @@
     align-items: center;
     width: 100%;
     height: 100vh;
-    padding: 10px;
-    gap: 10px;
+    padding: 20px;
+    gap: 20px;
   }
 
   /* --- EDS DISPLAY SECTION --- */
   .eds-container {
     background-color: #1a1a1a;
-    padding: 10px;
-    border: 2px solid #333;
-    border-radius: 8px;
+    padding: 20px;
+    border: 3px solid #333;
+    border-radius: 12px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    width: 100%;
-    max-width: 600px;
+    gap: 15px;
+    width: 95%;
+    max-width: 1400px; /* INCREASED FROM 600px FOR DESKTOP */
   }
 
   .panel-section {
@@ -50,15 +50,15 @@
 
   .bottom-row {
     display: flex;
-    gap: 8px;
+    gap: 15px;
     width: 100%;
   }
 
   .led-screen {
     background: #090807;
-    border: 1px solid #22180c;
-    border-radius: 4px;
-    padding: 4px;
+    border: 2px solid #22180c;
+    border-radius: 6px;
+    padding: 6px;
     display: grid;
     gap: 1px;
     width: 100%;
@@ -75,7 +75,7 @@
 
   .dot.on {
     background-color: #ff9900;
-    box-shadow: 0 0 2px #ff9900;
+    box-shadow: 0 0 4px #ff9900; /* Increased glow slightly */
   }
 
   .front-panel {
@@ -101,120 +101,127 @@
   /* --- CONTROLLER SECTION --- */
   .controller-panel {
     background-color: #c9d2db;
-    padding: 12px 10px;
-    width: 100%;
-    max-width: 600px;
-    border-radius: 6px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.8);
+    padding: 30px 25px;
+    width: 95%;
+    max-width: 1400px; /* INCREASED FROM 600px FOR DESKTOP */
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 25px;
   }
 
   .ctrl-top-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0 20px;
   }
 
   .ctrl-screen {
     background: #080808;
-    border: 1px solid #1a1a1a;
-    border-radius: 6px;
-    padding: 6px 10px;
+    border: 2px solid #1a1a1a;
+    border-radius: 10px;
+    padding: 15px 25px;
     display: flex;
-    gap: 6px;
+    gap: 15px;
     justify-content: center;
+    box-shadow: inset 0 4px 10px rgba(0,0,0,0.9);
   }
 
   .matrix-digit {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(7, 1fr);
-    gap: 1px;
+    gap: 4px; /* Increased gap */
     background: #120303;
-    padding: 2px;
-    border-radius: 2px;
+    padding: 8px; /* Increased padding */
+    border-radius: 4px;
   }
 
   .ctrl-dot {
-    width: 4px;
-    height: 4px;
+    width: 12px; /* SCALED UP FROM 4px */
+    height: 12px; /* SCALED UP FROM 4px */
     border-radius: 50%;
     background-color: #310808;
   }
 
   .ctrl-dot.on {
     background-color: #ff3333;
-    box-shadow: 0 0 3px #ff3333;
+    box-shadow: 0 0 8px #ff3333; /* Scaled up glow */
   }
 
   .ctrl-indicators {
     display: flex;
-    gap: 8px;
+    gap: 25px; /* Spaced out LEDs */
   }
 
   .led-col {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2px;
-    font-size: 9px;
+    gap: 8px;
+    font-size: 18px; /* Larger font */
     font-weight: bold;
     color: #111;
   }
 
   .light {
-    width: 10px;
-    height: 10px;
+    width: 24px; /* SCALED UP FROM 10px */
+    height: 24px; /* SCALED UP FROM 10px */
     border-radius: 50%;
     background: #111;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.8);
   }
 
   .light.lit-red {
     background: #ff4747;
-    box-shadow: 0 0 6px #ff4747;
+    box-shadow: 0 0 15px #ff4747, inset 0 0 5px #fff;
   }
 
   .ctrl-button-section {
-    border: 1px solid #1a1a1a;
-    border-radius: 8px;
-    padding: 10px 6px;
+    border: 2px solid #1a1a1a;
+    border-radius: 12px;
+    padding: 25px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: relative;
+    gap: 15px; /* Added gap between buttons */
   }
 
   .ctrl-btn {
     background-color: #0d0d0d;
-    border: 1px solid #1a1a1a;
-    outline: 1px solid #f2f2f2;
-    outline-offset: -3px;
-    border-radius: 6px;
+    border: 2px solid #1a1a1a;
+    outline: 2px solid #f2f2f2;
+    outline-offset: -5px;
+    border-radius: 10px;
     color: #f2f2f2;
-    height: 38px;
+    height: 85px; /* SCALED UP FROM 38px */
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
     font-weight: bold;
+    transition: background-color 0.1s;
   }
 
   .ctrl-btn.symbol-btn {
-    width: 12%;
-    font-size: 20px;
+    flex: 1; /* Distributes evenly */
+    font-size: 45px; /* SCALED UP FROM 20px */
   }
 
   .ctrl-btn.text-btn {
-    width: 18%;
-    font-size: 10px;
+    flex: 1.5; /* Makes text buttons slightly wider */
+    font-size: 24px; /* SCALED UP FROM 10px */
+    letter-spacing: 1px;
   }
 
   .ctrl-btn:active {
-    background-color: #222;
+    background-color: #2a2a2a;
+    transform: translateY(2px);
   }
 </style>
 </head>
@@ -236,7 +243,7 @@
   <!-- BOTTOM SECTION: CONTROLLER -->
   <div class="controller-panel">
     <div class="ctrl-top-row">
-      <div style="width: 30px;"></div>
+      <div style="width: 100px;"></div> <!-- Spacer balancing the right side -->
       <div class="ctrl-screen" id="ctrl-matrix-display"></div>
       <div class="ctrl-indicators">
         <div class="led-col"><div class="light lit-red"></div>Power</div>
