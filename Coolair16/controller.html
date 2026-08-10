@@ -2,58 +2,65 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EDS Controller - Auto-Cycling Search</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>EDS Controller</title>
 <style>
-  body {
-    background-color: #1e1e1e; 
+  * {
+    box-sizing: border-box;
+  }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #121212;
+    font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    padding: 20px;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    overflow: hidden;
   }
 
-  /* Scaled up for Desktop viewports */
-  .eds-panel {
+  /* --- CONTROLLER PANEL --- */
+  .controller-panel {
     background-color: #c9d2db;
-    padding: 45px 55px;
-    width: 95vw;
-    max-width: 1250px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.85);
+    padding: 35px 40px;
+    width: 95%;
+    max-width: 1000px;
+    border-radius: 12px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.85);
     position: relative;
-    box-sizing: border-box;
-    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
   }
 
-  /* --- TOP ROW --- */
-  .top-row {
+  /* Top Row Layout */
+  .ctrl-top-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 45px;
     padding: 0 10px;
   }
 
+  /* Data Port Graphic */
   .port-wrapper {
     display: flex;
     align-items: center;
   }
   .port-nub {
-    width: 20px;
-    height: 38px;
+    width: 16px;
+    height: 30px;
     background: #1a1a1a;
-    border-top-left-radius: 18px;
-    border-bottom-left-radius: 18px;
+    border-top-left-radius: 14px;
+    border-bottom-left-radius: 14px;
     margin-right: -2px;
     z-index: 1;
   }
   .port-main {
-    width: 90px;
-    height: 58px;
+    width: 72px;
+    height: 46px;
     background: #1a1a1a;
     border-radius: 6px;
     display: flex;
@@ -62,8 +69,8 @@
     z-index: 2;
   }
   .port-slot {
-    width: 65px;
-    height: 18px;
+    width: 50px;
+    height: 14px;
     background: #000;
     border: 1px solid #333;
     display: flex;
@@ -71,177 +78,162 @@
     align-items: center;
   }
   .gold-pin {
-    width: 10px;
-    height: 4px;
+    width: 8px;
+    height: 3px;
     background: #c2883a;
   }
 
-  /* --- DOT MATRIX DISPLAY SCREEN --- */
-  .display-screen {
+  /* Dot Matrix Display */
+  .ctrl-screen {
     background: #080808;
     border: 3px solid #1a1a1a;
-    border-radius: 12px;
-    padding: 20px 35px;
+    border-radius: 10px;
+    padding: 12px 20px;
     display: flex;
-    gap: 20px;
+    gap: 15px;
     justify-content: center;
-    align-items: center;
-    box-shadow: inset 0 4px 15px rgba(0,0,0,0.95);
+    box-shadow: inset 0 4px 12px rgba(0,0,0,0.95);
   }
 
-  /* 5x7 Dot Matrix Digit Grid Module */
   .matrix-digit {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(7, 1fr);
-    gap: 5px;
+    gap: 3px;
     background: #120303;
-    padding: 10px;
-    border-radius: 6px;
+    padding: 6px;
+    border-radius: 4px;
     border: 1px solid #220808;
-    box-shadow: inset 0 0 8px rgba(0,0,0,0.9);
   }
 
-  /* Individual Matrix LED Dots */
-  .dot {
-    width: 14px;
-    height: 14px;
+  .ctrl-dot {
+    width: 9px;
+    height: 9px;
     border-radius: 50%;
     background-color: #310808;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.9);
-    transition: background-color 0.05s ease, box-shadow 0.05s ease;
   }
 
-  /* Lit LED Dots */
-  .dot.on {
+  .ctrl-dot.on {
     background-color: #ff3333;
-    box-shadow: 
-      0 0 6px #ff3333,
-      0 0 14px #ff1a1a;
+    box-shadow: 0 0 5px #ff3333, 0 0 10px #ff1a1a;
   }
 
   /* LED Indicators */
-  .indicators {
+  .ctrl-indicators {
     display: flex;
-    gap: 25px;
-    text-align: center;
+    gap: 20px;
+    align-items: center;
   }
+
   .led-col {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-  }
-  .light {
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background: #111;
-    box-shadow: inset 0 3px 6px rgba(0,0,0,0.8);
-  }
-  .light.lit-red {
-    background: #ff4747;
-    box-shadow: 
-      inset 0 0 3px #fff,
-      0 0 12px #ff4747, 
-      0 0 24px #ff4747;
-  }
-  .led-label {
-    font-size: 18px;
-    color: #111;
+    gap: 6px;
+    font-size: 15px;
     font-weight: bold;
+    color: #111;
   }
 
-  /* --- BOTTOM BUTTON SECTION --- */
-  .button-section {
+  .light {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #111;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
+  }
+
+  .light.lit-red {
+    background: #ff4747;
+    box-shadow: 0 0 12px #ff4747, inset 0 0 4px #fff;
+  }
+
+  /* Button Section Outer Border with Labels */
+  .ctrl-button-section {
     border: 3px solid #1a1a1a;
     border-radius: 16px;
-    padding: 35px 25px;
+    padding: 25px 18px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: relative;
-    gap: 12px;
+    gap: 10px;
   }
 
   .label-top {
     position: absolute;
-    top: -22px;
-    left: 30px;
+    top: -18px;
+    left: 25px;
     background: #c9d2db;
-    padding: 0 14px;
-    font-size: 32px;
+    padding: 0 10px;
+    font-size: 26px;
     color: #111;
+    line-height: 1;
   }
   .label-top strong {
-    font-size: 36px;
+    font-size: 28px;
     font-weight: 900;
   }
 
   .label-bottom {
     position: absolute;
-    bottom: -18px;
-    right: 35px;
+    bottom: -15px;
+    right: 25px;
     background: #c9d2db;
-    padding: 0 14px;
-    font-size: 26px;
+    padding: 0 10px;
+    font-size: 22px;
     font-weight: 900;
     font-style: italic;
     color: #111;
+    line-height: 1;
   }
 
-  .btn {
+  /* Buttons */
+  .ctrl-btn {
     background-color: #0d0d0d;
-    background-clip: padding-box; 
-    border: 3px solid #1a1a1a;
-    outline: 3px solid #f2f2f2;
-    outline-offset: -6px;
-    border-radius: 16px;
+    border: 2px solid #1a1a1a;
+    outline: 2px solid #f2f2f2;
+    outline-offset: -5px;
+    border-radius: 14px;
     color: #f2f2f2;
-    height: 90px;
+    height: 70px;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: inset 0 2px 2px rgba(255,255,255,0.2);
-    transition: transform 0.05s ease, background-color 0.05s ease;
     box-sizing: border-box;
-  }
-
-  .btn.symbol-btn {
-    flex: 1 1 0;
-    font-size: 60px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: normal;
-    line-height: 1; 
-  }
-
-  .btn.text-btn {
-    flex: 1.6 1 0;
-    font-size: 22px;
-    font-family: 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif;
     font-weight: bold;
-    letter-spacing: -0.2px;
-    padding: 0;
+    transition: transform 0.05s, background-color 0.05s;
   }
 
-  .btn:active {
+  .ctrl-btn.symbol-btn {
+    flex: 1;
+    font-size: 38px;
+  }
+
+  .ctrl-btn.text-btn {
+    flex: 1.5;
+    font-size: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  .ctrl-btn:active {
     transform: translateY(2px);
-    background-color: #1a1a1a;
+    background-color: #222;
   }
 
   .toggle-svg {
-    width: 48px;
-    height: 52px;
+    width: 34px;
+    height: 38px;
   }
-
 </style>
 </head>
 <body>
 
-<div class="eds-panel">
-  
-  <div class="top-row">
+<div class="controller-panel">
+  <div class="ctrl-top-row">
+    
+    <!-- Left Port Connector -->
     <div class="port-wrapper">
       <div class="port-nub"></div>
       <div class="port-main">
@@ -254,33 +246,24 @@
       </div>
     </div>
 
-    <!-- 4-Digit 5x7 Dot Matrix Display Screen -->
-    <div class="display-screen" id="matrix-display">
-      <!-- Generated via JS -->
-    </div>
+    <!-- Center Display Matrix -->
+    <div class="ctrl-screen" id="ctrl-matrix-display"></div>
 
-    <div class="indicators">
-      <div class="led-col">
-        <div class="light lit-red"></div>
-        <span class="led-label">Power</span>
-      </div>
-      <div class="led-col">
-        <div class="light" id="com-light"></div>
-        <span class="led-label">Con</span>
-      </div>
-      <div class="led-col">
-        <div class="light" id="arrow-light"></div>
-        <span class="led-label" style="font-size: 22px; font-weight: normal; margin-top: -4px;">⇅</span>
-      </div>
+    <!-- Right Indicator LEDs -->
+    <div class="ctrl-indicators">
+      <div class="led-col"><div class="light lit-red"></div>Power</div>
+      <div class="led-col"><div class="light" id="com-light"></div>Con</div>
+      <div class="led-col"><div class="light" id="arrow-light"></div><span style="font-size:18px; margin-top:-3px;">⇅</span></div>
     </div>
   </div>
 
-  <div class="button-section">
+  <!-- Lower Button Deck -->
+  <div class="ctrl-button-section">
     <div class="label-top"><strong>EDS</strong> Controller</div>
     
-    <button class="btn text-btn" id="btn-search">SEARCH</button>
+    <button class="ctrl-btn text-btn" id="btn-search">SEARCH</button>
     
-    <button class="btn symbol-btn" id="btn-toggle">
+    <button class="ctrl-btn symbol-btn" id="btn-toggle">
       <svg class="toggle-svg" viewBox="0 0 26 28" fill="none" xmlns="http://www.w3.org/2000/svg">
         <line x1="18" y1="2" x2="8" y2="26" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
         <line x1="6" y1="22" x2="6" y2="7" stroke="#ffffff" stroke-width="2.2"/>
@@ -290,291 +273,132 @@
       </svg>
     </button>
     
-    <!-- Four individual plus buttons -->
-    <button class="btn symbol-btn" id="btn-p1000">+</button>
-    <button class="btn symbol-btn" id="btn-p100">+</button>
-    <button class="btn symbol-btn" id="btn-p10">+</button>
-    <button class="btn symbol-btn" id="btn-p1">+</button>
-    
-    <button class="btn symbol-btn" id="btn-minus">&minus;</button>
-    
-    <button class="btn text-btn" id="btn-send">SEND</button>
-    
+    <button class="ctrl-btn symbol-btn" id="btn-p1000">+</button>
+    <button class="ctrl-btn symbol-btn" id="btn-p100">+</button>
+    <button class="ctrl-btn symbol-btn" id="btn-p10">+</button>
+    <button class="ctrl-btn symbol-btn" id="btn-p1">+</button>
+    <button class="ctrl-btn symbol-btn" id="btn-minus">&minus;</button>
+    <button class="ctrl-btn text-btn" id="btn-send">SEND</button>
+
     <div class="label-bottom">COOL-AIR</div>
   </div>
-
 </div>
 
 <script>
+  // Controller 5x7 Bitmaps
   const DIGITS_5x7 = {
-    0: [
-      [0,1,1,1,0],
-      [1,0,0,0,1],
-      [1,0,0,1,1],
-      [1,0,1,0,1],
-      [1,1,0,0,1],
-      [1,0,0,0,1],
-      [0,1,1,1,0]
-    ],
-    1: [
-      [0,0,1,0,0],
-      [0,1,1,0,0],
-      [1,0,1,0,0],
-      [0,0,1,0,0],
-      [0,0,1,0,0],
-      [0,0,1,0,0],
-      [1,1,1,1,1]
-    ],
-    2: [
-      [0,1,1,1,0],
-      [1,0,0,0,1],
-      [0,0,0,0,1],
-      [0,0,1,1,0],
-      [0,1,0,0,0],
-      [1,0,0,0,0],
-      [1,1,1,1,1]
-    ],
-    3: [
-      [0,1,1,1,0],
-      [1,0,0,0,1],
-      [0,0,0,0,1],
-      [0,0,1,1,0],
-      [0,0,0,0,1],
-      [1,0,0,0,1],
-      [0,1,1,1,0]
-    ],
-    4: [
-      [0,0,0,1,0],
-      [0,0,1,1,0],
-      [0,1,0,1,0],
-      [1,0,0,1,0],
-      [1,1,1,1,1],
-      [0,0,0,1,0],
-      [0,0,0,1,0]
-    ],
-    5: [
-      [1,1,1,1,1],
-      [1,0,0,0,0],
-      [1,1,1,1,0],
-      [0,0,0,0,1],
-      [0,0,0,0,1],
-      [1,0,0,0,1],
-      [0,1,1,1,0]
-    ],
-    6: [
-      [0,1,1,1,0],
-      [1,0,0,0,1],
-      [1,0,0,0,0],
-      [1,1,1,1,0],
-      [1,0,0,0,1],
-      [1,0,0,0,1],
-      [0,1,1,1,0]
-    ],
-    7: [
-      [1,1,1,1,1],
-      [0,0,0,0,1],
-      [0,0,0,1,0],
-      [0,0,1,0,0],
-      [0,0,1,0,0],
-      [0,0,1,0,0],
-      [0,0,1,0,0]
-    ],
-    8: [
-      [0,1,1,1,0],
-      [1,0,0,0,1],
-      [1,0,0,0,1],
-      [0,1,1,1,0],
-      [1,0,0,0,1],
-      [1,0,0,0,1],
-      [0,1,1,1,0]
-    ],
-    9: [
-      [0,1,1,1,0],
-      [1,0,0,0,1],
-      [1,0,0,0,1],
-      [0,1,1,1,1],
-      [0,0,0,0,1],
-      [1,0,0,0,1],
-      [0,1,1,1,0]
-    ]
+    0: [[0,1,1,1,0],[1,0,0,0,1],[1,0,0,1,1],[1,0,1,0,1],[1,1,0,0,1],[1,0,0,0,1],[0,1,1,1,0]],
+    1: [[0,0,1,0,0],[0,1,1,0,0],[1,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[1,1,1,1,1]],
+    2: [[0,1,1,1,0],[1,0,0,0,1],[0,0,0,0,1],[0,0,1,1,0],[0,1,0,0,0],[1,0,0,0,0],[1,1,1,1,1]],
+    3: [[0,1,1,1,0],[1,0,0,0,1],[0,0,0,0,1],[0,0,1,1,0],[0,0,0,0,1],[1,0,0,0,1],[0,1,1,1,0]],
+    4: [[0,0,0,1,0],[0,0,1,1,0],[0,1,0,1,0],[1,0,0,1,0],[1,1,1,1,1],[0,0,0,1,0],[0,0,0,1,0]],
+    5: [[1,1,1,1,1],[1,0,0,0,0],[1,1,1,1,0],[0,0,0,0,1],[0,0,0,0,1],[1,0,0,0,1],[0,1,1,1,0]],
+    6: [[0,1,1,1,0],[1,0,0,0,1],[1,0,0,0,0],[1,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[0,1,1,1,0]],
+    7: [[1,1,1,1,1],[0,0,0,0,1],[0,0,0,1,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0]],
+    8: [[0,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[0,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[0,1,1,1,0]],
+    9: [[0,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[0,1,1,1,1],[0,0,0,0,1],[1,0,0,0,1],[0,1,1,1,0]]
   };
 
-  const container = document.getElementById('matrix-display');
-  const comLight = document.getElementById('com-light');
-  const arrowLight = document.getElementById('arrow-light');
-  
-  let currentVal = 0; 
-  let searchDirectionDesc = false; 
-  let lastIncrementStep = 1;
-  let searchInterval = null;
-
-  const availableValues = [0, 1111, 2222, 9999];
-
-  const matrixModules = [];
+  // Build Controller Digits
+  const ctrlDisplay = document.getElementById('ctrl-matrix-display');
+  const ctrlModules = [];
   for (let m = 0; m < 4; m++) {
-    const modDiv = document.createElement('div');
-    modDiv.className = 'matrix-digit';
+    const mod = document.createElement('div');
+    mod.className = 'matrix-digit';
     const dots = [];
-    for (let r = 0; r < 7; r++) {
-      for (let c = 0; c < 5; c++) {
-        const dot = document.createElement('div');
-        dot.className = 'dot';
-        modDiv.appendChild(dot);
-        dots.push(dot);
-      }
+    for (let i = 0; i < 35; i++) {
+      const d = document.createElement('div');
+      d.className = 'ctrl-dot';
+      mod.appendChild(d);
+      dots.push(d);
     }
-    container.appendChild(modDiv);
-    matrixModules.push(dots);
+    ctrlDisplay.appendChild(mod);
+    ctrlModules.push(dots);
   }
 
-  function updateDisplay(val) {
+  // Update Controller Display
+  function updateCtrlDisplay(val) {
     const str = String(val).padStart(4, '0');
     for (let i = 0; i < 4; i++) {
       const num = parseInt(str[i], 10);
       const bitmap = DIGITS_5x7[num];
-      const dots = matrixModules[i];
-      let dotIndex = 0;
+      const dots = ctrlModules[i];
+      let idx = 0;
       for (let r = 0; r < 7; r++) {
         for (let c = 0; c < 5; c++) {
-          if (bitmap[r][c] === 1) {
-            dots[dotIndex].classList.add('on');
-          } else {
-            dots[dotIndex].classList.remove('on');
-          }
-          dotIndex++;
+          if (bitmap[r][c] === 1) dots[idx].classList.add('on');
+          else dots[idx].classList.remove('on');
+          idx++;
         }
       }
     }
   }
 
-  function addIndependent(val, step) {
-    let str = String(val).padStart(4, '0');
-    let d0 = parseInt(str[0], 10);
-    let d1 = parseInt(str[1], 10);
-    let d2 = parseInt(str[2], 10);
-    let d3 = parseInt(str[3], 10);
-
-    if (step === 1000) d0 = (d0 + 1) % 10;
-    if (step === 100)  d1 = (d1 + 1) % 10;
-    if (step === 10)   d2 = (d2 + 1) % 10;
-    if (step === 1)    d3 = (d3 + 1) % 10;
-
-    return parseInt(`${d0}${d1}${d2}${d3}`, 10);
-  }
-
-  function subIndependent(val, step) {
-    let str = String(val).padStart(4, '0');
-    let d0 = parseInt(str[0], 10);
-    let d1 = parseInt(str[1], 10);
-    let d2 = parseInt(str[2], 10);
-    let d3 = parseInt(str[3], 10);
-
-    if (step === 1000) d0 = (d0 - 1 + 10) % 10;
-    if (step === 100)  d1 = (d1 - 1 + 10) % 10;
-    if (step === 10)   d2 = (d2 - 1 + 10) % 10;
-    if (step === 1)    d3 = (d3 - 1 + 10) % 10;
-
-    return parseInt(`${d0}${d1}${d2}${d3}`, 10);
-  }
+  // Logic Variables
+  let currentVal = 1234;
+  let searchDirectionDesc = false;
+  let lastIncrementStep = 1;
+  let searchInterval = null;
+  const availableValues = [0, 1111, 2222, 9999];
 
   function stopAutoSearch() {
-    if (searchInterval) {
-      clearInterval(searchInterval);
-      searchInterval = null;
-    }
+    if (searchInterval) { clearInterval(searchInterval); searchInterval = null; }
   }
 
-  updateDisplay(currentVal);
+  function addIndep(val, step) {
+    let s = String(val).padStart(4, '0').split('').map(Number);
+    if (step === 1000) s[0] = (s[0] + 1) % 10;
+    if (step === 100)  s[1] = (s[1] + 1) % 10;
+    if (step === 10)   s[2] = (s[2] + 1) % 10;
+    if (step === 1)    s[3] = (s[3] + 1) % 10;
+    return parseInt(s.join(''), 10);
+  }
 
-  // Toggle Search Direction Button (Arrow)
+  function subIndep(val, step) {
+    let s = String(val).padStart(4, '0').split('').map(Number);
+    if (step === 1000) s[0] = (s[0] - 1 + 10) % 10;
+    if (step === 100)  s[1] = (s[1] - 1 + 10) % 10;
+    if (step === 10)   s[2] = (s[2] - 1 + 10) % 10;
+    if (step === 1)    s[3] = (s[3] - 1 + 10) % 10;
+    return parseInt(s.join(''), 10);
+  }
+
+  // Event Listeners
   document.getElementById('btn-toggle').addEventListener('click', () => {
     stopAutoSearch();
     searchDirectionDesc = !searchDirectionDesc;
-    if (!searchDirectionDesc) {
-      arrowLight.classList.remove('lit-red');
-    } else {
-      arrowLight.classList.add('lit-red');
-    }
+    document.getElementById('arrow-light').classList.toggle('lit-red', searchDirectionDesc);
   });
 
-  // SEARCH Button Logic (Auto-cycling every 2 seconds with wrap-around)
   document.getElementById('btn-search').addEventListener('click', () => {
     stopAutoSearch();
+    let sorted = [...availableValues].sort((a,b) => searchDirectionDesc ? b - a : a - b);
+    let idx = (sorted.indexOf(currentVal) + 1) % sorted.length;
+    currentVal = sorted[idx];
+    updateCtrlDisplay(currentVal);
 
-    let sorted = [...availableValues].sort((a, b) => a - b);
-    if (searchDirectionDesc) {
-      sorted.reverse();
-    }
-
-    // Find the next index in sequence, wrapping back to the beginning if at the end
-    let currentIndex = sorted.indexOf(currentVal);
-    if (currentIndex === -1) {
-      // If current value isn't directly in the list, find the closest matching step
-      currentIndex = sorted.findIndex(v => searchDirectionDesc ? v < currentVal : v > currentVal);
-      if (currentIndex === -1) currentIndex = 0;
-    } else {
-      currentIndex = (currentIndex + 1) % sorted.length;
-    }
-
-    currentVal = sorted[currentIndex];
-    updateDisplay(currentVal);
-
-    // Continue cycling every 2 seconds
     searchInterval = setInterval(() => {
-      let activeSorted = [...availableValues].sort((a, b) => a - b);
-      if (searchDirectionDesc) {
-        activeSorted.reverse();
-      }
-      let idx = activeSorted.indexOf(currentVal);
-      idx = (idx + 1) % activeSorted.length;
-      currentVal = activeSorted[idx];
-      updateDisplay(currentVal);
+      let activeSorted = [...availableValues].sort((a,b) => searchDirectionDesc ? b - a : a - b);
+      let i = (activeSorted.indexOf(currentVal) + 1) % activeSorted.length;
+      currentVal = activeSorted[i];
+      updateCtrlDisplay(currentVal);
     }, 2000);
   });
 
-  // Manual actions stop the automated search cycle
-  document.getElementById('btn-p1000').addEventListener('click', () => {
-    stopAutoSearch();
-    lastIncrementStep = 1000;
-    currentVal = addIndependent(currentVal, 1000);
-    updateDisplay(currentVal);
-  });
+  document.getElementById('btn-p1000').addEventListener('click', () => { stopAutoSearch(); lastIncrementStep = 1000; currentVal = addIndep(currentVal, 1000); updateCtrlDisplay(currentVal); });
+  document.getElementById('btn-p100').addEventListener('click', () => { stopAutoSearch(); lastIncrementStep = 100; currentVal = addIndep(currentVal, 100); updateCtrlDisplay(currentVal); });
+  document.getElementById('btn-p10').addEventListener('click', () => { stopAutoSearch(); lastIncrementStep = 10; currentVal = addIndep(currentVal, 10); updateCtrlDisplay(currentVal); });
+  document.getElementById('btn-p1').addEventListener('click', () => { stopAutoSearch(); lastIncrementStep = 1; currentVal = addIndep(currentVal, 1); updateCtrlDisplay(currentVal); });
+  document.getElementById('btn-minus').addEventListener('click', () => { stopAutoSearch(); currentVal = subIndep(currentVal, lastIncrementStep); updateCtrlDisplay(currentVal); });
 
-  document.getElementById('btn-p100').addEventListener('click', () => {
-    stopAutoSearch();
-    lastIncrementStep = 100;
-    currentVal = addIndependent(currentVal, 100);
-    updateDisplay(currentVal);
-  });
-
-  document.getElementById('btn-p10').addEventListener('click', () => {
-    stopAutoSearch();
-    lastIncrementStep = 10;
-    currentVal = addIndependent(currentVal, 10);
-    updateDisplay(currentVal);
-  });
-
-  document.getElementById('btn-p1').addEventListener('click', () => {
-    stopAutoSearch();
-    lastIncrementStep = 1;
-    currentVal = addIndependent(currentVal, 1);
-    updateDisplay(currentVal);
-  });
-
-  document.getElementById('btn-minus').addEventListener('click', () => {
-    stopAutoSearch();
-    currentVal = subIndependent(currentVal, lastIncrementStep);
-    updateDisplay(currentVal);
-  });
-
-  // SEND Button Logic
   document.getElementById('btn-send').addEventListener('click', () => {
     stopAutoSearch();
-    comLight.classList.add('lit-red');
-    setTimeout(() => {
-      comLight.classList.remove('lit-red');
-    }, 400);
+    const com = document.getElementById('com-light');
+    com.classList.add('lit-red');
+    setTimeout(() => com.classList.remove('lit-red'), 400);
   });
+
+  updateCtrlDisplay(currentVal);
 </script>
 
 </body>
