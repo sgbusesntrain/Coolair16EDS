@@ -3,130 +3,305 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shanghai CanRun EDS - Full Matrix Grid Display</title>
+<title>EDS Controller - Auto-Cycling Search</title>
 <style>
   body {
-    background-color: #121212;
+    background-color: #1e1e1e; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+
+  .eds-panel {
+    background-color: #c9d2db;
+    padding: 30px;
+    width: 610px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  /* --- TOP ROW --- */
+  .top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding: 0 10px;
+  }
+
+  .port-wrapper {
+    display: flex;
+    align-items: center;
+  }
+  .port-nub {
+    width: 10px;
+    height: 18px;
+    background: #1a1a1a;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    margin-right: -2px;
+    z-index: 1;
+  }
+  .port-main {
+    width: 45px;
+    height: 28px;
+    background: #1a1a1a;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+  }
+  .port-slot {
+    width: 32px;
+    height: 8px;
+    background: #000;
+    border: 1px solid #333;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+  .gold-pin {
+    width: 5px;
+    height: 2px;
+    background: #c2883a;
+  }
+
+  /* --- DOT MATRIX DISPLAY SCREEN --- */
+  .display-screen {
+    background: #080808;
+    border: 2px solid #1a1a1a;
+    border-radius: 8px;
+    padding: 12px 16px;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.9);
+  }
+
+  /* 5x7 Dot Matrix Digit Grid Module */
+  .matrix-digit {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(7, 1fr);
+    gap: 2px;
+    background: #120303;
+    padding: 4px;
+    border-radius: 3px;
+    border: 1px solid #220808;
+    box-shadow: inset 0 0 4px rgba(0,0,0,0.8);
+  }
+
+  /* Individual Matrix LED Dots */
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #310808;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.9);
+    transition: background-color 0.05s ease, box-shadow 0.05s ease;
+  }
+
+  /* Lit LED Dots */
+  .dot.on {
+    background-color: #ff3333;
+    box-shadow: 
+      0 0 4px #ff3333,
+      0 0 8px #ff1a1a;
+  }
+
+  /* LED Indicators */
+  .indicators {
+    display: flex;
+    gap: 12px;
+    text-align: center;
+  }
+  .led-col {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    margin: 0;
-    font-family: 'Courier New', Courier, monospace;
-    color: #ff8800;
-  }
-
-  .eds-container {
-    background-color: #1a1a1a;
-    padding: 25px;
-    border: 3px solid #333;
-    border-radius: 12px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.9);
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    box-sizing: border-box;
-  }
-
-  .panel-section {
-    display: flex;
-    flex-direction: column;
     gap: 6px;
   }
-
-  .panel-title {
-    font-size: 12px;
-    color: #888;
-    letter-spacing: 1px;
+  .light {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #111;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
+  }
+  .light.lit-red {
+    background: #ff4747;
+    box-shadow: 
+      inset 0 0 2px #fff,
+      0 0 8px #ff4747, 
+      0 0 15px #ff4747;
+  }
+  .led-label {
+    font-size: 10px;
+    color: #111;
     font-weight: bold;
   }
 
-  .bottom-row {
+  /* --- BOTTOM BUTTON SECTION --- */
+  .button-section {
+    border: 2px solid #1a1a1a;
+    border-radius: 10px;
+    padding: 18px 14px;
     display: flex;
-    gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
   }
 
-  /* LED Matrix Screen Base */
-  .led-screen {
-    background: #050200;
-    border: 2px solid #221100;
-    border-radius: 6px;
-    padding: 8px;
-    box-shadow: inset 0 2px 10px rgba(0,0,0,0.9);
-    display: grid;
-    gap: 2px;
+  .label-top {
+    position: absolute;
+    top: -12px;
+    left: 15px;
+    background: #c9d2db;
+    padding: 0 8px;
+    font-size: 18px;
+    color: #111;
+  }
+  .label-top strong {
+    font-size: 20px;
+    font-weight: 900;
+  }
+
+  .label-bottom {
+    position: absolute;
+    bottom: -9px;
+    right: 25px;
+    background: #c9d2db;
+    padding: 0 8px;
+    font-size: 14px;
+    font-weight: 900;
+    font-style: italic;
+    color: #111;
+  }
+
+  .btn {
+    background-color: #0d0d0d;
+    background-clip: padding-box; 
+    border: 2px solid #1a1a1a;
+    outline: 2px solid #f2f2f2;
+    outline-offset: -4px;
+    border-radius: 10px;
+    color: #f2f2f2;
+    height: 48px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.15);
+    transition: transform 0.05s ease, background-color 0.05s ease;
     box-sizing: border-box;
   }
 
-  /* Individual Dot */
-  .dot {
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background-color: #260c00;
-    box-shadow: inset 0 1px 1px rgba(0,0,0,0.9);
+  .btn.symbol-btn {
+    width: 46px;
+    flex: 0 0 46px;
+    font-size: 38px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+    line-height: 1; 
   }
 
-  .dot.on {
-    background-color: #ff6600;
-    box-shadow: 0 0 4px #ff6600, 0 0 6px #ff3300;
+  .btn.text-btn {
+    width: 76px;
+    flex: 0 0 76px;
+    font-size: 13.5px;
+    font-family: 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: bold;
+    letter-spacing: -0.2px;
+    padding: 0;
   }
 
-  /* Proportional Grids */
-  .front-panel {
-    width: 680px;
-    height: 90px;
-    grid-template-columns: repeat(160, 1fr);
-    grid-template-rows: repeat(16, 1fr);
+  .btn:active {
+    transform: translateY(1px);
+    background-color: #1a1a1a;
   }
 
-  .side-panel {
-    width: 440px;
-    height: 90px;
-    grid-template-columns: repeat(96, 1fr);
-    grid-template-rows: repeat(16, 1fr);
+  .toggle-svg {
+    width: 26px;
+    height: 28px;
   }
 
-  .rear-panel {
-    width: 200px;
-    height: 90px;
-    grid-template-columns: repeat(40, 1fr);
-    grid-template-rows: repeat(16, 1fr);
-  }
 </style>
 </head>
 <body>
 
-<div class="eds-container">
+<div class="eds-panel">
+  
+  <div class="top-row">
+    <div class="port-wrapper">
+      <div class="port-nub"></div>
+      <div class="port-main">
+        <div class="port-slot">
+          <div class="gold-pin"></div>
+          <div class="gold-pin"></div>
+          <div class="gold-pin"></div>
+          <div class="gold-pin"></div>
+        </div>
+      </div>
+    </div>
 
-  <!-- FRONT PANEL (160x16) -->
-  <div class="panel-section">
-    <div class="panel-title">FRONT PANEL (160x16) [Style 6]</div>
-    <div class="led-screen front-panel" id="front-grid"></div>
+    <!-- 4-Digit 5x7 Dot Matrix Display Screen -->
+    <div class="display-screen" id="matrix-display">
+      <!-- Generated via JS -->
+    </div>
+
+    <div class="indicators">
+      <div class="led-col">
+        <div class="light lit-red"></div>
+        <span class="led-label">Power</span>
+      </div>
+      <div class="led-col">
+        <div class="light" id="com-light"></div>
+        <span class="led-label">Con</span>
+      </div>
+      <div class="led-col">
+        <div class="light" id="arrow-light"></div>
+        <span class="led-label" style="font-size: 13px; font-weight: normal;">⇅</span>
+      </div>
+    </div>
   </div>
 
-  <!-- BOTTOM ROW: SIDE PANEL & REAR PANEL -->
-  <div class="bottom-row">
+  <div class="button-section">
+    <div class="label-top"><strong>EDS</strong> Controller</div>
     
-    <!-- SIDE PANEL (96x16) -->
-    <div class="panel-section">
-      <div class="panel-title">SIDE PANEL (96x16) [Style 5]</div>
-      <div class="led-screen side-panel" id="side-grid"></div>
-    </div>
-
-    <!-- REAR PANEL (40x16) -->
-    <div class="panel-section">
-      <div class="panel-title">REAR PANEL (40x16) [Style 1]</div>
-      <div class="led-screen rear-panel" id="rear-grid"></div>
-    </div>
-
+    <button class="btn text-btn" id="btn-search">SEARCH</button>
+    
+    <button class="btn symbol-btn" id="btn-toggle">
+      <svg class="toggle-svg" viewBox="0 0 26 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="18" y1="2" x2="8" y2="26" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
+        <line x1="6" y1="22" x2="6" y2="7" stroke="#ffffff" stroke-width="2.2"/>
+        <polyline points="2,11 6,6 10,11" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="20" y1="6" x2="20" y2="21" stroke="#ffffff" stroke-width="2.2"/>
+        <polyline points="16,17 20,22 24,17" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    
+    <!-- Four individual plus buttons -->
+    <button class="btn symbol-btn" id="btn-p1000">+</button>
+    <button class="btn symbol-btn" id="btn-p100">+</button>
+    <button class="btn symbol-btn" id="btn-p10">+</button>
+    <button class="btn symbol-btn" id="btn-p1">+</button>
+    
+    <button class="btn symbol-btn" id="btn-minus">&minus;</button>
+    
+    <button class="btn text-btn" id="btn-send">SEND</button>
+    
+    <div class="label-bottom">COOL-AIR</div>
   </div>
 
 </div>
 
 <script>
-  // Complete 5x7 Font Bitmaps for numeric dot matrix rendering
   const DIGITS_5x7 = {
     0: [
       [0,1,1,1,0],
@@ -220,86 +395,182 @@
     ]
   };
 
-  function buildGrid(elementId, cols, rows) {
-    const container = document.getElementById(elementId);
-    const total = cols * rows;
-    const grid = [];
-    for (let r = 0; r < rows; r++) {
-      grid[r] = [];
-      for (let c = 0; c < cols; c++) {
+  const container = document.getElementById('matrix-display');
+  const comLight = document.getElementById('com-light');
+  const arrowLight = document.getElementById('arrow-light');
+  
+  let currentVal = 0; 
+  let searchDirectionDesc = false; 
+  let lastIncrementStep = 1;
+  let searchInterval = null;
+
+  const availableValues = [0, 1111, 2222, 9999];
+
+  const matrixModules = [];
+  for (let m = 0; m < 4; m++) {
+    const modDiv = document.createElement('div');
+    modDiv.className = 'matrix-digit';
+    const dots = [];
+    for (let r = 0; r < 7; r++) {
+      for (let c = 0; c < 5; c++) {
         const dot = document.createElement('div');
         dot.className = 'dot';
-        container.appendChild(dot);
-        grid[r][c] = dot;
+        modDiv.appendChild(dot);
+        dots.push(dot);
       }
     }
-    return grid;
+    container.appendChild(modDiv);
+    matrixModules.push(dots);
   }
 
-  const frontGrid = buildGrid('front-grid', 160, 16);
-  const sideGrid = buildGrid('side-grid', 96, 16);
-  const rearGrid = buildGrid('rear-grid', 40, 16);
-
-  function clearGrid(grid, cols, rows) {
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
-        grid[r][c].classList.remove('on');
-      }
-    }
-  }
-
-  function fillGrid(grid, cols, rows) {
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
-        grid[r][c].classList.add('on');
-      }
-    }
-  }
-
-  function renderNumber(grid, startCol, startRow, codeStr) {
-    let cursorCol = startCol;
-    for (let i = 0; i < codeStr.length; i++) {
-      const digit = parseInt(codeStr[i], 10);
-      const bitmap = DIGITS_5x7[digit];
+  function updateDisplay(val) {
+    const str = String(val).padStart(4, '0');
+    for (let i = 0; i < 4; i++) {
+      const num = parseInt(str[i], 10);
+      const bitmap = DIGITS_5x7[num];
+      const dots = matrixModules[i];
+      let dotIndex = 0;
       for (let r = 0; r < 7; r++) {
         for (let c = 0; c < 5; c++) {
           if (bitmap[r][c] === 1) {
-            const targetR = startRow + r;
-            const targetC = cursorCol + c;
-            if (grid[targetR] && grid[targetR][targetC]) {
-              grid[targetR][targetC].classList.add('on');
-            }
+            dots[dotIndex].classList.add('on');
+          } else {
+            dots[dotIndex].classList.remove('on');
           }
+          dotIndex++;
         }
       }
-      cursorCol += 6; // 5 columns + 1 spacing gap
     }
   }
 
-  function updateDisplays() {
-    const code = localStorage.getItem('eds_code') || '0';
-    const paddedCode = String(code).padStart(4, '0');
+  function addIndependent(val, step) {
+    let str = String(val).padStart(4, '0');
+    let d0 = parseInt(str[0], 10);
+    let d1 = parseInt(str[1], 10);
+    let d2 = parseInt(str[2], 10);
+    let d3 = parseInt(str[3], 10);
 
-    // Clear all screens first
-    clearGrid(frontGrid, 160, 16);
-    clearGrid(sideGrid, 96, 16);
-    clearGrid(rearGrid, 40, 16);
+    if (step === 1000) d0 = (d0 + 1) % 10;
+    if (step === 100)  d1 = (d1 + 1) % 10;
+    if (step === 10)   d2 = (d2 + 1) % 10;
+    if (step === 1)    d3 = (d3 + 1) % 10;
 
-    if (paddedCode === '9999') {
-      fillGrid(frontGrid, 160, 16);
-      fillGrid(sideGrid, 96, 16);
-      fillGrid(rearGrid, 40, 16);
+    return parseInt(`${d0}${d1}${d2}${d3}`, 10);
+  }
+
+  function subIndependent(val, step) {
+    let str = String(val).padStart(4, '0');
+    let d0 = parseInt(str[0], 10);
+    let d1 = parseInt(str[1], 10);
+    let d2 = parseInt(str[2], 10);
+    let d3 = parseInt(str[3], 10);
+
+    if (step === 1000) d0 = (d0 - 1 + 10) % 10;
+    if (step === 100)  d1 = (d1 - 1 + 10) % 10;
+    if (step === 10)   d2 = (d2 - 1 + 10) % 10;
+    if (step === 1)    d3 = (d3 - 1 + 10) % 10;
+
+    return parseInt(`${d0}${d1}${d2}${d3}`, 10);
+  }
+
+  function stopAutoSearch() {
+    if (searchInterval) {
+      clearInterval(searchInterval);
+      searchInterval = null;
+    }
+  }
+
+  updateDisplay(currentVal);
+
+  // Toggle Search Direction Button (Arrow)
+  document.getElementById('btn-toggle').addEventListener('click', () => {
+    stopAutoSearch();
+    searchDirectionDesc = !searchDirectionDesc;
+    if (!searchDirectionDesc) {
+      arrowLight.classList.remove('lit-red');
     } else {
-      // Render 4-digit code using pure matrix pixels on all panels
-      renderNumber(frontGrid, 130, 4, paddedCode);
-      renderNumber(sideGrid, 5, 4, paddedCode);
-      renderNumber(rearGrid, 5, 4, paddedCode);
+      arrowLight.classList.add('lit-red');
     }
-  }
+  });
 
-  window.addEventListener('storage', updateDisplays);
-  setInterval(updateDisplays, 500);
-  updateDisplays();
+  // SEARCH Button Logic (Auto-cycling every 2 seconds with wrap-around)
+  document.getElementById('btn-search').addEventListener('click', () => {
+    stopAutoSearch();
+
+    let sorted = [...availableValues].sort((a, b) => a - b);
+    if (searchDirectionDesc) {
+      sorted.reverse();
+    }
+
+    // Find the next index in sequence, wrapping back to the beginning if at the end
+    let currentIndex = sorted.indexOf(currentVal);
+    if (currentIndex === -1) {
+      // If current value isn't directly in the list, find the closest matching step
+      currentIndex = sorted.findIndex(v => searchDirectionDesc ? v < currentVal : v > currentVal);
+      if (currentIndex === -1) currentIndex = 0;
+    } else {
+      currentIndex = (currentIndex + 1) % sorted.length;
+    }
+
+    currentVal = sorted[currentIndex];
+    updateDisplay(currentVal);
+
+    // Continue cycling every 2 seconds
+    searchInterval = setInterval(() => {
+      let activeSorted = [...availableValues].sort((a, b) => a - b);
+      if (searchDirectionDesc) {
+        activeSorted.reverse();
+      }
+      let idx = activeSorted.indexOf(currentVal);
+      idx = (idx + 1) % activeSorted.length;
+      currentVal = activeSorted[idx];
+      updateDisplay(currentVal);
+    }, 2000);
+  });
+
+  // Manual actions stop the automated search cycle
+  document.getElementById('btn-p1000').addEventListener('click', () => {
+    stopAutoSearch();
+    lastIncrementStep = 1000;
+    currentVal = addIndependent(currentVal, 1000);
+    updateDisplay(currentVal);
+  });
+
+  document.getElementById('btn-p100').addEventListener('click', () => {
+    stopAutoSearch();
+    lastIncrementStep = 100;
+    currentVal = addIndependent(currentVal, 100);
+    updateDisplay(currentVal);
+  });
+
+  document.getElementById('btn-p10').addEventListener('click', () => {
+    stopAutoSearch();
+    lastIncrementStep = 10;
+    currentVal = addIndependent(currentVal, 10);
+    updateDisplay(currentVal);
+  });
+
+  document.getElementById('btn-p1').addEventListener('click', () => {
+    stopAutoSearch();
+    lastIncrementStep = 1;
+    currentVal = addIndependent(currentVal, 1);
+    updateDisplay(currentVal);
+  });
+
+  document.getElementById('btn-minus').addEventListener('click', () => {
+    stopAutoSearch();
+    currentVal = subIndependent(currentVal, lastIncrementStep);
+    updateDisplay(currentVal);
+  });
+
+  // SEND Button Logic
+  document.getElementById('btn-send').addEventListener('click', () => {
+    stopAutoSearch();
+    comLight.classList.add('lit-red');
+    setTimeout(() => {
+      comLight.classList.remove('lit-red');
+    }, 400);
+  });
 </script>
 
 </body>
