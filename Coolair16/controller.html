@@ -15,14 +15,15 @@
     font-family: Arial, sans-serif;
   }
 
-    .eds-panel {
+  .eds-panel {
     background-color: #c9d2db;
-    padding: 20px;
+    padding: 35px 45px; /* Scaled up padding */
     width: 100%;
-    max-width: 610px; /* Won't exceed 610px on desktop, but shrinks nicely on phones */
-    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    max-width: 780px; /* Scaled up container */
+    box-shadow: 0 15px 40px rgba(0,0,0,0.8);
     position: relative;
     box-sizing: border-box;
+    border-radius: 8px;
   }
 
   /* --- TOP ROW --- */
@@ -30,7 +31,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 25px;
+    margin-bottom: 35px; /* Increased margin */
     padding: 0 10px;
   }
 
@@ -39,17 +40,17 @@
     align-items: center;
   }
   .port-nub {
-    width: 10px;
-    height: 18px;
+    width: 14px;
+    height: 26px;
     background: #1a1a1a;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
     margin-right: -2px;
     z-index: 1;
   }
   .port-main {
-    width: 45px;
-    height: 28px;
+    width: 60px;
+    height: 38px;
     background: #1a1a1a;
     border-radius: 4px;
     display: flex;
@@ -58,8 +59,8 @@
     z-index: 2;
   }
   .port-slot {
-    width: 32px;
-    height: 8px;
+    width: 44px;
+    height: 12px;
     background: #000;
     border: 1px solid #333;
     display: flex;
@@ -67,8 +68,8 @@
     align-items: center;
   }
   .gold-pin {
-    width: 5px;
-    height: 2px;
+    width: 7px;
+    height: 3px;
     background: #c2883a;
   }
 
@@ -77,12 +78,12 @@
     background: #080808;
     border: 2px solid #1a1a1a;
     border-radius: 8px;
-    padding: 12px 16px;
+    padding: 16px 24px; /* Larger screen padding */
     display: flex;
-    gap: 8px;
+    gap: 12px; /* Increased gap between digits */
     justify-content: center;
     align-items: center;
-    box-shadow: inset 0 2px 8px rgba(0,0,0,0.9);
+    box-shadow: inset 0 2px 10px rgba(0,0,0,0.9);
   }
 
   /* 5x7 Dot Matrix Digit Grid Module */
@@ -90,18 +91,18 @@
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(7, 1fr);
-    gap: 2px;
+    gap: 3px; /* Increased spacing between dots */
     background: #120303;
-    padding: 4px;
-    border-radius: 3px;
+    padding: 6px;
+    border-radius: 4px;
     border: 1px solid #220808;
-    box-shadow: inset 0 0 4px rgba(0,0,0,0.8);
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.8);
   }
 
-  /* Individual Matrix LED Dots */
+  /* Individual Matrix LED Dots - SCALED UP */
   .dot {
-    width: 6px;
-    height: 6px;
+    width: 9px;  /* Increased from 6px */
+    height: 9px; /* Increased from 6px */
     border-radius: 50%;
     background-color: #310808;
     box-shadow: inset 0 1px 2px rgba(0,0,0,0.9);
@@ -112,25 +113,25 @@
   .dot.on {
     background-color: #ff3333;
     box-shadow: 
-      0 0 4px #ff3333,
-      0 0 8px #ff1a1a;
+      0 0 5px #ff3333,
+      0 0 10px #ff1a1a;
   }
 
   /* LED Indicators */
   .indicators {
     display: flex;
-    gap: 12px;
+    gap: 16px; /* Increased gap */
     text-align: center;
   }
   .led-col {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
   }
   .light {
-    width: 14px;
-    height: 14px;
+    width: 18px; /* Larger indicator lights */
+    height: 18px;
     border-radius: 50%;
     background: #111;
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
@@ -139,11 +140,11 @@
     background: #ff4747;
     box-shadow: 
       inset 0 0 2px #fff,
-      0 0 8px #ff4747, 
-      0 0 15px #ff4747;
+      0 0 10px #ff4747, 
+      0 0 18px #ff4747;
   }
   .led-label {
-    font-size: 10px;
+    font-size: 13px; /* Larger font */
     color: #111;
     font-weight: bold;
   }
@@ -151,8 +152,8 @@
   /* --- BOTTOM BUTTON SECTION --- */
   .button-section {
     border: 2px solid #1a1a1a;
-    border-radius: 10px;
-    padding: 18px 14px;
+    border-radius: 12px;
+    padding: 24px 18px; /* Increased padding */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -161,25 +162,25 @@
 
   .label-top {
     position: absolute;
-    top: -12px;
-    left: 15px;
+    top: -16px;
+    left: 20px;
     background: #c9d2db;
-    padding: 0 8px;
-    font-size: 18px;
+    padding: 0 10px;
+    font-size: 22px; /* Larger label */
     color: #111;
   }
   .label-top strong {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 900;
   }
 
   .label-bottom {
     position: absolute;
-    bottom: -9px;
+    bottom: -12px;
     right: 25px;
     background: #c9d2db;
-    padding: 0 8px;
-    font-size: 14px;
+    padding: 0 10px;
+    font-size: 18px; /* Larger label */
     font-weight: 900;
     font-style: italic;
     color: #111;
@@ -191,9 +192,9 @@
     border: 2px solid #1a1a1a;
     outline: 2px solid #f2f2f2;
     outline-offset: -4px;
-    border-radius: 10px;
+    border-radius: 12px; /* Smoother curve */
     color: #f2f2f2;
-    height: 48px;
+    height: 64px; /* Taller buttons */
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -204,18 +205,18 @@
   }
 
   .btn.symbol-btn {
-    width: 46px;
-    flex: 0 0 46px;
-    font-size: 38px;
+    width: 64px; /* Wider button */
+    flex: 0 0 64px;
+    font-size: 46px; /* Larger math symbols */
     font-family: Arial, Helvetica, sans-serif;
     font-weight: normal;
     line-height: 1; 
   }
 
   .btn.text-btn {
-    width: 76px;
-    flex: 0 0 76px;
-    font-size: 13.5px;
+    width: 104px; /* Wider button */
+    flex: 0 0 104px;
+    font-size: 16px; /* Larger text */
     font-family: 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif;
     font-weight: bold;
     letter-spacing: -0.2px;
@@ -223,13 +224,13 @@
   }
 
   .btn:active {
-    transform: translateY(1px);
+    transform: translateY(2px);
     background-color: #1a1a1a;
   }
 
   .toggle-svg {
-    width: 26px;
-    height: 28px;
+    width: 32px; /* Scaled up SVG */
+    height: 36px;
   }
 
 </style>
@@ -267,7 +268,7 @@
       </div>
       <div class="led-col">
         <div class="light" id="arrow-light"></div>
-        <span class="led-label" style="font-size: 13px; font-weight: normal;">⇅</span>
+        <span class="led-label" style="font-size: 16px; font-weight: normal; margin-top: -2px;">⇅</span>
       </div>
     </div>
   </div>
