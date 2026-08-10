@@ -18,7 +18,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 16px;
+    gap: 14px;
     overflow: hidden;
   }
 
@@ -32,7 +32,7 @@
     flex-direction: column;
     gap: 8px;
     width: 90%;
-    max-width: 880px;
+    max-width: 780px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.8);
   }
 
@@ -86,11 +86,11 @@
   /* --- CONTROLLER PANEL --- */
   .controller-board {
     background-color: #d7dde4;
-    width: 880px;
-    height: 300px;
+    width: 780px;
+    height: 260px;
     border-radius: 6px;
     box-shadow: 0 12px 35px rgba(0,0,0,0.6), inset 0 0 12px rgba(255,255,255,0.6);
-    padding: 16px 24px;
+    padding: 12px 18px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -107,63 +107,63 @@
   /* Port Connector */
   .port-assembly { display: flex; align-items: center; }
   .port-cap {
-    width: 15px; height: 28px;
+    width: 14px; height: 26px;
     background-color: #1a1a1a;
     border-radius: 10px 0 0 10px;
     margin-right: -2px;
     z-index: 1;
   }
   .port-body {
-    width: 55px; height: 40px;
+    width: 50px; height: 36px;
     background-color: #1a1a1a;
     border-radius: 5px;
     display: flex; align-items: center; justify-content: center;
     z-index: 2;
   }
   .port-slot {
-    width: 40px; height: 11px;
+    width: 36px; height: 10px;
     background-color: #000;
     border: 1px solid #111;
     border-radius: 2px;
     display: flex; justify-content: space-evenly; align-items: center;
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.9);
   }
-  .gold-pin { width: 5px; height: 2.5px; background-color: #d4af37; box-shadow: 0 0 2px #d4af37; }
+  .gold-pin { width: 4.5px; height: 2px; background-color: #d4af37; box-shadow: 0 0 2px #d4af37; }
 
-  /* Controller LED Screen */
+  /* Controller LED Screen (Larger & Prominent) */
   .led-screen-bezel {
     background-color: #080808;
     border: 2px solid #111;
     border-radius: 8px;
-    padding: 6px 16px;
+    padding: 8px 22px;
     display: flex;
-    gap: 12px;
+    gap: 16px;
     box-shadow: inset 0 0 14px rgba(0,0,0,0.95), 0 2px 4px rgba(255,255,255,0.3);
   }
   .digit {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(7, 1fr);
-    gap: 2px;
+    gap: 2.5px;
   }
   .ctrl-dot {
-    width: 7.5px; height: 7.5px;
+    width: 9px; height: 9px;
     border-radius: 50%;
     background-color: #250404;
   }
   .ctrl-dot.on {
     background-color: #ff3333;
-    box-shadow: 0 0 5px #ff3333, 0 0 9px #ff0000;
+    box-shadow: 0 0 6px #ff3333, 0 0 10px #ff0000;
   }
 
   /* Status Lights */
-  .status-lights { display: flex; gap: 16px; align-items: flex-end; }
+  .status-lights { display: flex; gap: 14px; align-items: flex-end; }
   .indicator {
-    display: flex; flex-direction: column; align-items: center; gap: 4px;
-    font-size: 12px; font-weight: bold; color: #111;
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    font-size: 11px; font-weight: bold; color: #111;
   }
   .indicator-light {
-    width: 15px; height: 15px; border-radius: 50%;
+    width: 14px; height: 14px; border-radius: 50%;
     background-color: #1a1a1a;
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
   }
@@ -172,15 +172,15 @@
     box-shadow: 0 0 10px #ff4747, inset 0 0 4px #fff;
   }
 
-  /* Button Section */
+  /* Button Section (Tighter and Wider to match reference) */
   .button-group-wrapper {
     position: relative;
     border: 2px solid #1a1a1a;
     border-radius: 10px;
-    padding: 16px 14px 12px 14px;
+    padding: 12px 10px 10px 10px;
     display: flex;
     justify-content: space-between;
-    gap: 8px;
+    gap: 6px;
     align-items: center;
   }
 
@@ -190,16 +190,16 @@
     color: #111;
     line-height: 1;
   }
-  .legend-top { top: -10px; left: 18px; padding: 0 6px; font-size: 20px; }
-  .legend-top strong { font-size: 22px; font-weight: 900; }
-  .legend-bottom { bottom: -9px; right: 18px; padding: 0 6px; font-size: 18px; font-weight: 900; font-style: italic; }
+  .legend-top { top: -9px; left: 16px; padding: 0 6px; font-size: 18px; }
+  .legend-top strong { font-size: 20px; font-weight: 900; }
+  .legend-bottom { bottom: -8px; right: 16px; padding: 0 6px; font-size: 16px; font-weight: 900; font-style: italic; }
 
   .btn {
     background-color: #0d0d0d;
     color: #fff;
     border: none;
-    border-radius: 8px;
-    height: 50px;
+    border-radius: 7px;
+    height: 46px;
     display: flex; justify-content: center; align-items: center;
     cursor: pointer;
     position: relative;
@@ -211,26 +211,25 @@
     position: absolute;
     top: 2.5px; left: 2.5px; right: 2.5px; bottom: 2.5px;
     border: 1.5px solid #d2d8df;
-    border-radius: 6px;
+    border-radius: 5px;
     pointer-events: none;
   }
   .btn:active { transform: translateY(2px); box-shadow: 0 1px 3px rgba(0,0,0,0.5); }
   
-  /* Fixed precise widths matching reference proportions */
   .btn-text {
-    width: 90px;
+    width: 95px;
     flex-shrink: 0;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: bold;
     letter-spacing: 0.5px;
   }
   .btn-symbol {
-    width: 50px;
+    width: 72px;
     flex-shrink: 0;
-    font-size: 26px;
+    font-size: 24px;
     font-weight: bold;
   }
-  .toggle-icon { width: 24px; height: 24px; }
+  .toggle-icon { width: 22px; height: 22px; }
 </style>
 </head>
 <body>
@@ -274,7 +273,7 @@
         </div>
         <div class="indicator">
           <div class="indicator-light" id="led-dir"></div>
-          <span style="font-size: 14px; margin-top:-2px;">⇅</span>
+          <span style="font-size: 13px; margin-top:-2px;">⇅</span>
         </div>
       </div>
     </div>
